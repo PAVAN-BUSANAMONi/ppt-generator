@@ -1,0 +1,29 @@
+{
+  "name": "ppt-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "test-deck": "tsx src/index.ts",
+    "build": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jszip": "^3.4.0",
+    "jszip": "^3.10.1",
+    "lucide": "^1.31.0",
+    "pptxgenjs": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "sharp": "^0.35.3",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}

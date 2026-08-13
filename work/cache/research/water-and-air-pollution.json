@@ -1,0 +1,193 @@
+{
+  "sources": [
+    {
+      "id": "source-01",
+      "title": "WHO Global Air Quality Guidelines & Disease Burden",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health",
+      "publisher": "World Health Organization (WHO)",
+      "publishedAt": "2024",
+      "sourceType": "intl-org",
+      "relevanceScore": 97,
+      "subjectTags": [
+        "air pollution",
+        "health burden",
+        "pm2.5",
+        "mortality",
+        "who guidelines"
+      ],
+      "topicTerms": [
+        "air",
+        "pollution",
+        "health",
+        "who",
+        "mortality",
+        "respiratory"
+      ],
+      "extractedText": "Ambient air pollution causes an estimated 4.2 million premature deaths worldwide per year. Approximately 99% of the global population breathes air exceeding WHO guideline limits. Water pollution affects millions with over 80% of global wastewater discharged without treatment."
+    },
+    {
+      "id": "source-04",
+      "title": "UN Water Development Report: Wastewater and Water Quality",
+      "url": "https://www.unwater.org/publications/un-world-water-development-report",
+      "publisher": "United Nations Educational, Scientific and Cultural Organization (UNESCO)",
+      "publishedAt": "2023",
+      "sourceType": "intl-org",
+      "relevanceScore": 97,
+      "subjectTags": [
+        "wastewater",
+        "water pollution",
+        "runoff",
+        "treatment"
+      ],
+      "topicTerms": [
+        "wastewater",
+        "runoff",
+        "sewage",
+        "discharge",
+        "water quality"
+      ],
+      "extractedText": "Agricultural runoff represents 42% of global freshwater pollution, while industrial discharge accounts for 28% and municipal sewage contributes 18% of global aquatic pollutant loading."
+    },
+    {
+      "id": "source-03",
+      "title": "EPA National Primary Drinking Water Regulations",
+      "url": "https://www.epa.gov/ground-water-and-drinking-water/national-primary-drinking-water-regulations",
+      "publisher": "US Environmental Protection Agency (EPA)",
+      "publishedAt": "2024",
+      "sourceType": "government",
+      "relevanceScore": 80,
+      "subjectTags": [
+        "drinking water",
+        "epa standards",
+        "contaminants",
+        "mcl thresholds"
+      ],
+      "topicTerms": [
+        "drinking water",
+        "lead",
+        "nitrate",
+        "arsenic",
+        "epa",
+        "mcl"
+      ],
+      "extractedText": "EPA sets Maximum Contaminant Levels (MCL) for drinking water contaminants including Lead (0.015 mg/L), Nitrate (10.0 mg/L), Arsenic (0.010 mg/L), and Benzene (0.005 mg/L) to prevent systemic human toxicity."
+    },
+    {
+      "id": "source-02",
+      "title": "Lancet Commission on Pollution and Health Report",
+      "url": "https://www.thelancet.com/commissions/pollution-and-health",
+      "publisher": "The Lancet Journal",
+      "publishedAt": "2022",
+      "sourceType": "academic",
+      "relevanceScore": 74,
+      "subjectTags": [
+        "pollution mortality",
+        "economic loss",
+        "global health"
+      ],
+      "topicTerms": [
+        "pollution",
+        "lancet",
+        "deaths",
+        "economic",
+        "welfare"
+      ],
+      "extractedText": "Pollution remains responsible for approximately 9.0 million premature deaths per year worldwide, accounting for 1 in 6 deaths globally. Pollution-related disease causes global welfare losses totaling $4.6 trillion annually."
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "Ambient air pollution causes an estimated 4.2 million premature deaths worldwide per year.",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "claim": "Approximately 99% of the global population breathes air exceeding WHO guideline limits.",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "claim": "Water pollution affects millions with over 80% of global wastewater discharged without treatment.",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "claim": "Agricultural runoff represents 42% of global freshwater pollution, while industrial discharge accounts for 28% and municipal sewage contributes 18% of global aquatic pollutant loading.",
+      "sourceIds": [
+        "source-04"
+      ]
+    },
+    {
+      "claim": "EPA sets Maximum Contaminant Levels (MCL) for drinking water contaminants including Lead (0.015 mg/L), Nitrate (10.0 mg/L), Arsenic (0.010 mg/L), and Benzene (0.005 mg/L) to prevent systemic human toxicity.",
+      "sourceIds": [
+        "source-03"
+      ]
+    },
+    {
+      "claim": "Pollution remains responsible for approximately 9.0 million premature deaths per year worldwide, accounting for 1 in 6 deaths globally.",
+      "sourceIds": [
+        "source-02"
+      ]
+    },
+    {
+      "claim": "Pollution-related disease causes global welfare losses totaling $4.6 trillion annually.",
+      "sourceIds": [
+        "source-02"
+      ]
+    }
+  ],
+  "statistics": [
+    {
+      "label": "premature deaths worldwide per year",
+      "value": "4.2 million",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "label": "of the global population breathes air exceeding WHO guidelin",
+      "value": "99%",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "label": "of global wastewater discharged without treatment",
+      "value": "80%",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "label": "of global freshwater pollution",
+      "value": "42%",
+      "sourceIds": [
+        "source-04"
+      ]
+    },
+    {
+      "label": "and municipal sewage contributes 18% of global aquatic pollu",
+      "value": "28%",
+      "sourceIds": [
+        "source-04"
+      ]
+    },
+    {
+      "label": "premature deaths per year worldwide",
+      "value": "9.0 million",
+      "sourceIds": [
+        "source-02"
+      ]
+    },
+    {
+      "label": "annually",
+      "value": "$4.6 trillion",
+      "sourceIds": [
+        "source-02"
+      ]
+    }
+  ]
+}

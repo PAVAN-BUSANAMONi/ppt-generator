@@ -1,0 +1,118 @@
+{
+  "sources": [
+    {
+      "id": "source-02",
+      "title": "USDA Economic Research Service: AI and Robotics in Agriculture",
+      "url": "https://www.ers.usda.gov/topics/farm-practices-management/technology-in-agriculture/",
+      "publisher": "US Department of Agriculture (USDA)",
+      "publishedAt": "2023",
+      "sourceType": "government",
+      "relevanceScore": 73,
+      "subjectTags": [
+        "computer vision",
+        "spot spraying",
+        "usda",
+        "herbicide reduction"
+      ],
+      "topicTerms": [
+        "computer vision",
+        "usda",
+        "spraying",
+        "herbicide",
+        "crop health"
+      ],
+      "extractedText": "Targeted spot-spraying using computer vision algorithms reduces chemical herbicide use by 80% to 90% compared to traditional broadcast spraying, yielding significant cost savings."
+    },
+    {
+      "id": "source-01",
+      "title": "FAO Digital Agriculture Transformation & Precision Farming",
+      "url": "https://www.fao.org/digital-agriculture/en/",
+      "publisher": "Food and Agriculture Organization (FAO)",
+      "publishedAt": "2024",
+      "sourceType": "intl-org",
+      "relevanceScore": 70,
+      "subjectTags": [
+        "precision farming",
+        "fao",
+        "iot sensors",
+        "drones",
+        "irrigation"
+      ],
+      "topicTerms": [
+        "agriculture",
+        "fao",
+        "sensors",
+        "drones",
+        "irrigation",
+        "precision"
+      ],
+      "extractedText": "Precision agriculture technologies leveraging IoT sensors and drone imaging reduce fertilizer runoff by 30% and optimize crop irrigation efficiency by 25% across commercial grain operations."
+    },
+    {
+      "id": "source-03",
+      "title": "Nature Food: Global Yield Optimization via Machine Learning",
+      "url": "https://www.nature.com/articles/s43016-023-00789-x",
+      "publisher": "Nature Publishing Group",
+      "publishedAt": "2023",
+      "sourceType": "academic",
+      "relevanceScore": 54,
+      "subjectTags": [
+        "yield prediction",
+        "machine learning",
+        "satellite imagery",
+        "crop health"
+      ],
+      "topicTerms": [
+        "yield prediction",
+        "machine learning",
+        "satellite",
+        "crop health",
+        "disease"
+      ],
+      "extractedText": "Machine learning yield prediction models achieve 94% accuracy when integrating satellite multispectral imagery with localized soil moisture sensor feeds."
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "Targeted spot-spraying using computer vision algorithms reduces chemical herbicide use by 80% to 90% compared to traditional broadcast spraying, yielding significant cost savings.",
+      "sourceIds": [
+        "source-02"
+      ]
+    },
+    {
+      "claim": "Precision agriculture technologies leveraging IoT sensors and drone imaging reduce fertilizer runoff by 30% and optimize crop irrigation efficiency by 25% across commercial grain operations.",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "claim": "Machine learning yield prediction models achieve 94% accuracy when integrating satellite multispectral imagery with localized soil moisture sensor feeds.",
+      "sourceIds": [
+        "source-03"
+      ]
+    }
+  ],
+  "statistics": [
+    {
+      "label": "to 90% compared to traditional broadcast spraying",
+      "value": "80%",
+      "sourceIds": [
+        "source-02"
+      ]
+    },
+    {
+      "label": "and optimize crop irrigation efficiency by 25% across commer",
+      "value": "30%",
+      "sourceIds": [
+        "source-01"
+      ]
+    },
+    {
+      "label": "accuracy when integrating satellite multispectral imagery wi",
+      "value": "94%",
+      "sourceIds": [
+        "source-03"
+      ]
+    }
+  ]
+}

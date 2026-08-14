@@ -25,7 +25,7 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
   // Background
   const bg = isDark ? hex(t.colors.dark) : hex(t.colors.off);
 
-  let currentY = 1.8;
+  let currentY = 0.85;
 
   // Eyebrow
   elements.push(
@@ -34,7 +34,7 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
       x: ml,
       y: currentY,
       w: cw,
-      h: 0.4,
+      h: 0.35,
       fontFace: t.typography.caption.fontFace,
       fontSize: t.typography.caption.fontSize + 2,
       color: isDark ? t.colors.gold : t.colors.teal,
@@ -42,24 +42,28 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
       theme: t,
     })
   );
-  currentY += 0.5;
+  currentY += 0.38;
 
-  // Large Display Title
+  // Large Display Title (dynamic sizing for length)
+  const titleLen = data.title.length;
+  const titleFontSize = titleLen > 40 ? 28 : 34;
+  const titleH = titleLen > 40 ? 0.75 : 0.65;
+
   elements.push(
     textBox({
       text: data.title,
       x: ml,
       y: currentY,
       w: cw,
-      h: 1.2,
+      h: titleH,
       fontFace: t.typography.display.fontFace,
-      fontSize: t.typography.display.fontSize,
+      fontSize: titleFontSize,
       color: isDark ? t.colors.white : t.colors.ink,
       bold: true,
       theme: t,
     })
   );
-  currentY += 1.4;
+  currentY += titleH + 0.25;
 
   // Summary / Synthesis Card
   elements.push(
@@ -67,7 +71,7 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
       x: ml,
       y: currentY,
       width: cw,
-      height: 2.0,
+      height: 2.2,
       icon: 'CheckSquare',
       title: 'Synthesis',
       body: data.summaryText,
@@ -78,7 +82,7 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
       theme: t,
     })
   );
-  currentY += 2.2;
+  currentY += 2.4;
 
   // Optional Call to Action Box
   if (data.finalCallToAction) {
@@ -88,14 +92,14 @@ export function renderConclusionSlide(data: ConclusionSlideData): SlideDefinitio
         x: ml,
         y: currentY,
         w: cw,
-        h: 0.6,
+        h: 0.58,
         fontFace: t.typography.body.fontFace,
-        fontSize: t.typography.body.fontSize,
+        fontSize: 14,
         color: isDark ? t.colors.goldSoft : t.colors.ink,
         bold: true,
         boxFill: isDark ? t.colors.ink : t.colors.mint2,
         boxStroke: t.colors.teal,
-        padding: 12,
+        padding: 10,
         valign: 'middle',
         theme: t,
       })

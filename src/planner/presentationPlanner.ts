@@ -140,6 +140,25 @@ function createDomainAdaptedPlan(
       { type: 'takeaways', titleSuffix: 'Key Adoption Guidelines', purpose: 'Highlight top principles for farm adoption', message: 'Essential guidelines for commercial growers adopting agtech.', visualIntent: 'diagram', dataIntent: false },
       { type: 'conclusion', titleSuffix: 'Future of Sustainable Agriculture', purpose: 'Synthesize digital agriculture roadmap', message: 'Achieving sustainable food security through AI and robotics.', visualIntent: 'none', dataIntent: false },
     ];
+  } else if (lower.includes('iot') || lower.includes('cyber') || lower.includes('security') || lower.includes('embedded') || lower.includes('malware') || lower.includes('botnet') || lower.includes('firmware') || lower.includes('cve') || lower.includes('ddos')) {
+    sectionDefs = [
+      { id: 'sec-01', title: 'Threat Landscape & Attack Vectors', purpose: 'Introduce IoT proliferation and exploitation vectors' },
+      { id: 'sec-02', title: 'Firmware Vulnerabilities & Botnet Dynamics', purpose: 'Examine CVE exploit mechanics and DDoS botnets' },
+      { id: 'sec-03', title: 'Zero-Trust Architecture & Hardware Roots', purpose: 'Detail hardware TPM, mTLS, and microsegmentation' },
+      { id: 'sec-04', title: 'Strategic Roadmap & Conclusions', purpose: 'Synthesize implementation guidelines for enterprise defense' },
+    ];
+    archetypeSeq = [
+      { type: 'title', titleSuffix: 'Strategic Briefing', purpose: 'Introduce IoT and embedded security paradigm', message: 'Hardening connected embedded devices against advanced firmware exploits and botnets.', visualIntent: 'mixed', dataIntent: false },
+      { type: 'overview', titleSuffix: 'Defense-in-Depth Architecture', purpose: 'Outline core cybersecurity vectors', message: 'Comprehensive roadmap covering firmware integrity, zero-trust, and threat mitigation.', visualIntent: 'diagram', dataIntent: false },
+      { type: 'concept', titleSuffix: 'Hardware Root of Trust Architecture', purpose: 'Explain cryptographic silicon trust foundations', message: 'Hardware TPM and secure boot preventing unauthorized firmware modification.', visualIntent: 'image', dataIntent: false },
+      { type: 'process', titleSuffix: 'Automated Vulnerability & Patching Lifecycle', purpose: 'Detail 4-stage firmware patching cycle', message: 'Continuous CVE scanning, automated signed over-the-air deployment, and telemetry.', visualIntent: 'diagram', dataIntent: true },
+      { type: 'comparison', titleSuffix: 'Perimeter Security vs Zero-Trust Microsegmentation', purpose: 'Compare traditional firewalls vs zero-trust mTLS', message: 'Transitioning from legacy flat network perimeters to device-level cryptographic isolation.', visualIntent: 'table', dataIntent: true },
+      { type: 'statistics', titleSuffix: 'Exploitation & Vulnerability Distribution', purpose: 'Display empirical NIST and ENISA vulnerability percentages', message: 'Grounded metrics on firmware CVEs, default credentials, and memory safety flaws.', visualIntent: 'chart', dataIntent: true },
+      { type: 'table', titleSuffix: 'Zero-Trust Threat Mitigation Benchmarks', purpose: 'Tabulate threat vector elimination benchmarks', message: 'Hardware TPM, mTLS authentication, and microsegmentation isolation percentages.', visualIntent: 'table', dataIntent: true },
+      { type: 'case-study', titleSuffix: 'Mirai Botnet & Industrial Infiltration', purpose: 'Analyze real-world botnet attack case study', message: 'Forensic breakdown of automated Telnet brute-force and DDoS infrastructure.', visualIntent: 'image', dataIntent: true },
+      { type: 'takeaways', titleSuffix: 'Strategic Recommendations for CISOs', purpose: 'Highlight core action items for executive leadership', message: 'Essential guidelines for embedded device procurement and cryptographic hardening.', visualIntent: 'diagram', dataIntent: false },
+      { type: 'conclusion', titleSuffix: 'Securing the Connected Future', purpose: 'Synthesize embedded security vision', message: 'Building resilient cyber-physical systems through verified hardware trust.', visualIntent: 'none', dataIntent: false },
+    ];
   } else if (lower.includes('rights') || lower.includes('law') || lower.includes('policy')) {
     sectionDefs = [
       { id: 'sec-01', title: 'Human Rights Foundations', purpose: 'Introduce universal declarations and principles' },

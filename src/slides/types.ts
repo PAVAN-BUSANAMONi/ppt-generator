@@ -87,6 +87,7 @@ export interface OverviewSlideData extends BaseSlideData {
 // ---------------------------------------------------------------------------
 export interface ConceptSlideData extends BaseSlideData {
   type: 'concept';
+  image?: string;
   mainConcept: {
     title: string;
     description: string;
@@ -138,6 +139,8 @@ export interface StatisticsSlideData extends BaseSlideData {
     explanation?: string;
     sourceIds?: string[];
   }>;
+  /** Optional contextual photograph displayed alongside the metric cards */
+  image?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -151,6 +154,8 @@ export interface ProcessSlideData extends BaseSlideData {
     description: string;
     icon?: string;
   }>;
+  /** Optional contextual photograph displayed alongside the process steps */
+  image?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -182,6 +187,7 @@ export interface TableSlideData extends BaseSlideData {
   type: 'table';
   headers: string[];
   rows: string[][];
+  colWidths?: number[];
   keyTakeaway?: string;
   chartData?: {
     chartType: 'doughnut' | 'pie' | 'bar' | 'line' | 'col';

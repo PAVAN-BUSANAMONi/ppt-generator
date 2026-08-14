@@ -19,6 +19,11 @@ import {
   CanvasSize,
 } from './types';
 
+function cleanHex(color?: string): string | undefined {
+  if (!color) return undefined;
+  return color.replace(/^#/, '');
+}
+
 // ---------------------------------------------------------------------------
 // createPresentation
 // ---------------------------------------------------------------------------
@@ -74,7 +79,7 @@ export async function exportPresentation(
     const slide = pptx.addSlide();
 
     if (slideDef.background) {
-      slide.background = { color: slideDef.background };
+      slide.background = { color: cleanHex(slideDef.background)! };
     }
 
     if (slideDef.notes) {
@@ -99,31 +104,32 @@ export async function exportPresentation(
 }
 
 // ---------------------------------------------------------------------------
-// Element renderers
+// Element dispatch
 // ---------------------------------------------------------------------------
 
-function renderElement(
-  slide: PptxGenJS.Slide,
-  element: SlideElement
-): void {
-  switch (element.kind) {
+function renderElement(slide: PptxGenJS.Slide, el: SlideElement): void {
+  switch (el.kind) {
     case 'text':
-      renderText(slide, element);
+      renderText(slide, el);
       break;
     case 'shape':
-      renderShape(slide, element);
+      renderShape(slide, el);
       break;
     case 'image':
-      renderImage(slide, element);
+      renderImage(slide, el);
       break;
     case 'table':
-      renderTable(slide, element);
+      renderTable(slide, el);
       break;
     case 'chart':
-      renderChart(slide, element);
+      renderChart(slide, el);
       break;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Element renderers
+// ---------------------------------------------------------------------------
 
 function renderText(slide: PptxGenJS.Slide, el: TextElement): void {
   const textOptions: PptxGenJS.TextPropsOptions = {
@@ -133,13 +139,13 @@ function renderText(slide: PptxGenJS.Slide, el: TextElement): void {
     h: el.size.h,
     fontFace: el.style.fontFace ?? 'Aptos',
     fontSize: el.style.fontSize ?? 18,
-    color: el.style.color ?? '073B3A',
+    color: cleanHex(el.style.color ?? '073B3A'),
     bold: el.style.bold ?? false,
     italic: el.style.italic ?? false,
     align: el.style.align ?? 'left',
     valign: el.style.valign ?? 'top',
-    fill: el.boxFill ? { color: el.boxFill } : undefined,
-    line: el.boxStroke ? { color: el.boxStroke, width: 1 } : undefined,
+    fill: el.boxFill ? { color: cleanHex(el.boxFill)! } : undefined,
+    line: el.boxStroke ? { color: cleanHex(el.boxStroke)!, width: 1 } : undefined,
   };
 
   if (el.style.bullet) {
@@ -163,7 +169,7 @@ function renderText(slide: PptxGenJS.Slide, el: TextElement): void {
       options: {
         fontFace: run.options?.fontFace ?? el.style.fontFace ?? 'Aptos',
         fontSize: run.options?.fontSize ?? el.style.fontSize ?? 18,
-        color: run.options?.color ?? el.style.color ?? '073B3A',
+        color: cleanHex(run.options?.color ?? el.style.color ?? '073B3A'),
         bold: run.options?.bold ?? el.style.bold ?? false,
         italic: run.options?.italic ?? el.style.italic ?? false,
         bullet: run.options?.bullet
@@ -190,8 +196,8 @@ function renderShape(slide: PptxGenJS.Slide, el: ShapeElement): void {
     y: el.position.y,
     w: el.size.w,
     h: el.size.h,
-    fill: el.fill ? { color: el.fill } : undefined,
-    line: el.stroke ? { color: el.stroke, width: el.strokeWidth ?? 1 } : undefined,
+    fill: el.fill ? { color: cleanHex(el.fill)! } : undefined,
+    line: el.stroke ? { color: cleanHex(el.stroke)!, width: el.strokeWidth ?? 1 } : undefined,
     rectRadius: el.rectRadius,
   };
 
@@ -200,7 +206,7 @@ function renderShape(slide: PptxGenJS.Slide, el: ShapeElement): void {
       type: el.shadow.type,
       blur: el.shadow.blur,
       offset: el.shadow.offset,
-      color: el.shadow.color,
+      color: cleanHex(el.shadow.color),
       opacity: el.shadow.opacity,
     };
   }
@@ -239,9 +245,9 @@ function renderTable(slide: PptxGenJS.Slide, el: TableElement): void {
       options: {
         fontFace: cell.options?.fontFace ?? 'Aptos',
         fontSize: cell.options?.fontSize ?? 14,
-        color: cell.options?.color ?? '073B3A',
+        color: cleanHex(cell.options?.color ?? '073B3A'),
         bold: cell.options?.bold ?? false,
-        fill: cell.options?.fill ? { color: cell.options.fill } : undefined,
+        fill: cell.options?.fill ? { color: cleanHex(cell.options.fill)! } : undefined,
         align: cell.options?.align ?? 'left',
         valign: cell.options?.valign ?? 'middle',
         colspan: cell.options?.colSpan,
@@ -256,7 +262,7 @@ function renderTable(slide: PptxGenJS.Slide, el: TableElement): void {
     w: el.size.w,
     h: el.size.h,
     colW: el.colWidths,
-    border: el.border ? { color: el.border.color ?? 'B9D8D4', pt: el.border.pt ?? 1 } : undefined,
+    border: el.border ? { color: cleanHex(el.border.color) ?? 'B9D8D4', pt: el.border.pt ?? 1 } : undefined,
   };
 
   slide.addTable(rows, tableOptions);
@@ -280,7 +286,7 @@ function renderChart(slide: PptxGenJS.Slide, el: ChartElement): void {
     legendPos: el.options?.legendPos ?? 'b',
     showTitle: el.options?.showTitle ?? false,
     title: el.options?.title,
-    chartColors: el.options?.chartColors,
+    chartColors: el.options?.chartColors?.map((c) => cleanHex(c)!),
   };
 
   slide.addChart(chartTypeMap[el.chartType] ?? 'doughnut', el.data, chartOpts);

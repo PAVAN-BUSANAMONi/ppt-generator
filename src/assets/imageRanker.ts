@@ -19,23 +19,23 @@ export function rankAndFilterImageCandidates(
   assets: ImageAsset[],
   visualPlan: VisualPlan,
   query: string,
-  minRelevanceThreshold: number = 85
+  minRelevanceThreshold: number = 60
 ): EvaluatedCandidate[] {
   const targetAspect = visualPlan.aspectRatio; // landscape, portrait, square
   const evaluated: EvaluatedCandidate[] = [];
 
   assets.forEach((asset) => {
-    // 1. Resolution Filter (reject extremely low resolution < 600px)
-    if (asset.width < 600 || asset.height < 600) {
+    // 1. Resolution Filter (reject extremely low resolution < 400px)
+    if (asset.width < 400 || asset.height < 400) {
       evaluated.push({
         asset,
         relevanceScore: 0,
         qualityScore: 0,
         orientationScore: 0,
         finalScore: 0,
-        validation: { valid: false, relevanceScore: 0, domainCompatible: false, rejectionReasons: ['Resolution below 600px.'] },
+        validation: { valid: false, relevanceScore: 0, domainCompatible: false, rejectionReasons: ['Resolution below 400px.'] },
         decision: 'REJECTED',
-        rejectionReasons: ['Resolution below 600px minimum boundary.'],
+        rejectionReasons: ['Resolution below 400px minimum boundary.'],
       });
       return;
     }
@@ -76,7 +76,7 @@ export function rankAndFilterImageCandidates(
       relevanceScore: valResult.relevanceScore,
       qualityScore,
       orientationScore,
-      finalScore: isAccepted ? finalScore : 0, // Final score force-zeroed if rejected by semantic gate
+      finalScore: isAccepted ? finalScore : 0,
       validation: valResult,
       decision: isAccepted ? 'ACCEPTED' : 'REJECTED',
       rejectionReasons: valResult.rejectionReasons,

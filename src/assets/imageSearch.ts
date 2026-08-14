@@ -60,9 +60,16 @@ function searchWikimediaCommons(query: string, limit: number): Promise<ImageAsse
               const pages = parsed.query?.pages || {};
               const assets: ImageAsset[] = [];
 
+              const validExts = ['.jpg', '.jpeg', '.png', '.webp'];
+
               Object.values(pages).forEach((page: any, idx: number) => {
                 const info = page.imageinfo?.[0];
                 if (info && info.url && info.width && info.height) {
+                  const titleLower = (page.title || '').toLowerCase();
+                  const urlLower = (info.url || '').toLowerCase();
+                  const isImage = validExts.some((ext) => titleLower.endsWith(ext) || urlLower.endsWith(ext));
+                  if (!isImage) return;
+
                   const ext = info.extmetadata || {};
                   const license = ext.LicenseShortName?.value || 'CC BY-SA 4.0';
                   const creator = ext.Artist?.value?.replace(/<[^>]+>/g, '').trim() || 'Wikimedia Contributor';

@@ -1,6 +1,6 @@
 /**
  * Component 2: title
- * Header block producing eyebrow + title + optional subtitle.
+ * Header block producing eyebrow + title + optional subtitle with dynamic typography scaling.
  */
 
 import { SlideElement } from '../core/types';
@@ -50,22 +50,34 @@ export function title(options: TitleOptions): SlideElement[] {
     currentY += 0.38;
   }
 
-  // 2. Title
+  // 2. Title with dynamic line count calculation
+  const titleLen = options.title.length;
+  let titleFontSize = 34;
+  let titleH = 0.55;
+
+  if (titleLen > 42) {
+    titleFontSize = 26;
+    titleH = 0.85;
+  } else if (titleLen > 28) {
+    titleFontSize = 28;
+    titleH = 0.78;
+  }
+
   elements.push(
     textBox({
       text: options.title,
       x: ml,
       y: currentY,
       w: width,
-      h: 0.8,
+      h: titleH,
       fontFace: t.typography.title.fontFace,
-      fontSize: t.typography.title.fontSize,
+      fontSize: titleFontSize,
       color: titleColor,
       bold: t.typography.title.bold,
       theme: t,
     })
   );
-  currentY += 0.85;
+  currentY += titleH + 0.08;
 
   // 3. Subtitle (optional)
   if (options.subtitle) {
@@ -75,9 +87,9 @@ export function title(options: TitleOptions): SlideElement[] {
         x: ml,
         y: currentY,
         w: width,
-        h: 0.5,
+        h: 0.45,
         fontFace: t.typography.body.fontFace,
-        fontSize: t.typography.body.fontSize,
+        fontSize: 15,
         color: subtitleColor,
         theme: t,
       })

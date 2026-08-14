@@ -17,6 +17,26 @@ export interface RenderedSlideResult {
   height: number;
 }
 
+export async function renderSlideToPng(
+  slide: SlideDefinition,
+  outputPath: string
+): Promise<string> {
+  const dir = path.dirname(outputPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  const svgStr = renderSlideToSvg(slide);
+  const svgBuffer = Buffer.from(svgStr);
+
+  await sharp(svgBuffer)
+    .resize(1280, 720)
+    .png()
+    .toFile(outputPath);
+
+  return outputPath;
+}
+
 export async function renderSlidesToPng(
   slides: SlideDefinition[],
   outputDir: string
@@ -32,13 +52,7 @@ export async function renderSlidesToPng(
     const slideNum = String(i + 1).padStart(2, '0');
     const pngPath = path.join(outputDir, `slide-${slideNum}.png`);
 
-    const svgStr = renderSlideToSvg(slide);
-    const svgBuffer = Buffer.from(svgStr);
-
-    await sharp(svgBuffer)
-      .resize(1280, 720)
-      .png()
-      .toFile(pngPath);
+    await renderSlideToPng(slide, pngPath);
 
     results.push({
       slideNumber: i + 1,

@@ -102,8 +102,57 @@ export function validateDataSpec(
   };
 }
 
+const FORBIDDEN_SYNTHETIC_METRIC_PATTERNS = [
+  /preservation\s*index/i,
+  /cultural\s*index/i,
+  /heritage\s*score/i,
+  /success\s*score/i,
+  /impact\s*index/i,
+  /lineage\s*score/i,
+  /lineage\s*preservation/i,
+  /cultural\s*preservation/i,
+  /custom\s*score/i,
+  /synthetic\s*metric/i,
+  /arbitrary\s*scale/i,
+];
+
 /**
- * Validates value-level evidence provenance against research registry.
+ * STEP 44A — REJECT SYNTHETIC VISUAL METRICS
+ * Rejects invented metrics and synthetic 0-100 scales created merely to populate a chart.
+ */
+export function rejectSyntheticMetrics(spec: DataSpec): { passed: boolean; reason?: string } {
+  if (!spec) return { passed: true };
+
+  const title = spec.title || '';
+  for (const pattern of FORBIDDEN_SYNTHETIC_METRIC_PATTERNS) {
+    if (pattern.test(title)) {
+      return {
+        passed: false,
+        reason: `Rejected synthetic/unsupported metric in title: "${title}". Never invent numerical metrics to fill a chart.`,
+      };
+    }
+  }
+
+  if (spec.series) {
+    for (const s of spec.series) {
+      for (const pattern of FORBIDDEN_SYNTHETIC_METRIC_PATTERNS) {
+        if (pattern.test(s.name || '')) {
+          return {
+            passed: false,
+            reason: `Rejected synthetic/unsupported metric in series: "${s.name}". Never invent numerical metrics to fill a chart.`,
+          };
+        }
+      }
+    }
+  }
+
+  return { passed: true };
+}
+
+/**
+ * STEP 44 — VALUE-LEVEL CHART EVIDENCE GATE
+ * Validates that EVERY single numeric point in the chart has explicit source backing
+ * with category, value, unit, sourceId, and evidenceText.
  */
 export function validateDataEvidence(
   spec: DataSpec,
@@ -111,6 +160,17 @@ export function validateDataEvidence(
 ): EvidenceValidationResult {
   const invalidPoints: string[] = [];
   const rejectionReasons: string[] = [];
+
+  // 1. Synthetic Metric Gate
+  const synCheck = rejectSyntheticMetrics(spec);
+  if (!synCheck.passed) {
+    return {
+      valid: false,
+      invalidPoints: spec.categories || [],
+      evidenceCoverage: 0,
+      rejectionReasons: [synCheck.reason!],
+    };
+  }
 
   const knownSourceIds = new Set(registry.sources.map((s) => s.id));
   const points = spec.dataPoints || [];
@@ -130,7 +190,7 @@ export function validateDataEvidence(
   points.forEach((dp) => {
     let pointValid = true;
 
-    // 1. Check point sourceIds
+    // Check point sourceIds
     if (!dp.sourceIds || dp.sourceIds.length === 0) {
       pointValid = false;
       rejectionReasons.push(`Point "${dp.category}": missing sourceIds.`);
@@ -143,16 +203,18 @@ export function validateDataEvidence(
       }
     }
 
-    // 2. Check value existence
+    // Check value existence
     if (typeof dp.value !== 'number' || isNaN(dp.value) || !isFinite(dp.value)) {
       pointValid = false;
       rejectionReasons.push(`Point "${dp.category}": invalid non-numeric value ${dp.value}.`);
     }
 
-    // 3. Check explicit evidence record / evidenceText
+    // Check explicit evidence record / evidenceText
     if (!dp.evidenceText || dp.evidenceText.trim() === '') {
       pointValid = false;
-      rejectionReasons.push(`Point "${dp.category}": unsupported value (${dp.value}). Source does not provide year/category specific evidence text.`);
+      rejectionReasons.push(
+        `Point "${dp.category}": unsupported value (${dp.value}). Source does not provide category-specific evidence text.`
+      );
     }
 
     if (pointValid) {

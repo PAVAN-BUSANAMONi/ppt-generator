@@ -28,7 +28,7 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
   const hasImage = Boolean(data.image);
   const textWidth = hasImage ? cw * 0.58 : cw;
 
-  let currentY = 2.2;
+  let currentY = 1.4;
 
   // Eyebrow
   if (data.eyebrow) {
@@ -38,7 +38,7 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
         x: ml,
         y: currentY,
         w: textWidth,
-        h: 0.4,
+        h: 0.35,
         fontFace: t.typography.caption.fontFace,
         fontSize: t.typography.caption.fontSize + 2,
         color: isDark ? t.colors.gold : t.colors.teal,
@@ -46,25 +46,31 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
         theme: t,
       })
     );
-    currentY += 0.45;
+    currentY += 0.42;
   }
 
-  // Display Title
+  // Display Title with dynamic font size and calculated height
+  const isLongTitle = data.title.length > 30;
+  const titleFontSize = hasImage ? (isLongTitle ? 32 : 38) : (data.title.length > 45 ? 36 : 42);
+  const charsPerLine = Math.max(12, Math.floor(textWidth / (titleFontSize * 0.062)));
+  const titleLines = Math.max(1, Math.ceil(data.title.length / charsPerLine));
+  const titleH = titleLines * (titleFontSize * 0.015 + 0.18);
+
   elements.push(
     textBox({
       text: data.title,
       x: ml,
       y: currentY,
       w: textWidth,
-      h: 1.4,
+      h: titleH,
       fontFace: t.typography.display.fontFace,
-      fontSize: t.typography.display.fontSize,
+      fontSize: titleFontSize,
       color: isDark ? t.colors.white : t.colors.ink,
       bold: true,
       theme: t,
     })
   );
-  currentY += 1.5;
+  currentY += titleH + 0.15;
 
   // Subtitle
   if (data.subtitle) {
@@ -76,12 +82,12 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
         w: textWidth,
         h: 0.8,
         fontFace: t.typography.body.fontFace,
-        fontSize: t.typography.section.fontSize - 4, // 24pt
+        fontSize: hasImage ? 16 : 18,
         color: isDark ? t.colors.line : t.colors.slate,
         theme: t,
       })
     );
-    currentY += 0.9;
+    currentY += 0.85;
   }
 
   // Author & Date metadata
@@ -91,11 +97,11 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
       textBox({
         text: metaStr,
         x: ml,
-        y: currentY + 0.2,
+        y: currentY + 0.10,
         w: textWidth,
         h: 0.4,
         fontFace: t.typography.small.fontFace,
-        fontSize: t.typography.small.fontSize,
+        fontSize: 13,
         color: isDark ? t.colors.slate : t.colors.ink2,
         bold: true,
         theme: t,
@@ -109,9 +115,9 @@ export function renderTitleSlide(data: TitleSlideData): SlideDefinition {
       ...imagePanel({
         image: data.image,
         x: ml + cw * 0.62,
-        y: 1.8,
+        y: 1.4,
         width: cw * 0.38,
-        height: 4.6,
+        height: 5.0,
         frameColor: isDark ? t.colors.ink2 : t.colors.mint,
         theme: t,
       })

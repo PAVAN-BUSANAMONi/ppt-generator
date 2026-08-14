@@ -37,7 +37,7 @@ export function table(options: TableOptions): TableElement {
     text: h,
     options: {
       fontFace: t.typography.heading.fontFace,
-      fontSize: t.typography.body.fontSize - 2, // 16pt
+      fontSize: 12,
       color: headerColor,
       bold: true,
       fill: headerFill,
@@ -57,7 +57,7 @@ export function table(options: TableOptions): TableElement {
       text: cellText,
       options: {
         fontFace: t.typography.body.fontFace,
-        fontSize: t.typography.small.fontSize, // 16pt
+        fontSize: 11,
         color: hex(t.colors.ink),
         fill: rowFill,
         align: 'left',

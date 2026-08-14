@@ -31,18 +31,22 @@ export function renderOverviewSlide(data: OverviewSlideData): SlideDefinition {
     })
   );
 
+  const hasLongSubtitle = Boolean(data.subtitle && data.subtitle.length > 50);
+  const startY = hasLongSubtitle ? 2.38 : 2.20;
+
   // Agenda Cards
   const count = data.agendaItems.length;
   const colCount = count <= 3 ? count : Math.ceil(count / 2);
   const cardWidth = (cw - (colCount - 1) * 0.3) / colCount;
-  const cardHeight = count <= 3 ? 4.2 : 2.0;
+  const cardHeight = count <= 3 ? (hasLongSubtitle ? 4.05 : 4.20) : (hasLongSubtitle ? 1.88 : 2.00);
+  const gapY = count <= 3 ? 0 : (hasLongSubtitle ? 0.20 : 0.25);
 
   data.agendaItems.forEach((item, idx) => {
     const r = count <= 3 ? 0 : Math.floor(idx / colCount);
     const c = count <= 3 ? idx : idx % colCount;
 
     const x = ml + c * (cardWidth + 0.3);
-    const y = 2.2 + r * (cardHeight + 0.25);
+    const y = startY + r * (cardHeight + gapY);
 
     elements.push(
       ...card({

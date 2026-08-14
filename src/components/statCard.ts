@@ -37,6 +37,8 @@ export function statCard(options: StatCardOptions): SlideElement[] {
   const labelColor = isDark ? t.colors.white : t.colors.ink;
   const expColor = isDark ? t.colors.line : t.colors.slate;
 
+  const isCompact = options.height < 3.0;
+
   // 1. Container shape
   const cardShape: ShapeElement = {
     kind: 'shape',
@@ -51,45 +53,52 @@ export function statCard(options: StatCardOptions): SlideElement[] {
   };
   elements.push(cardShape);
 
-  const padding = pxToInches(t.spacing.md);
+  const padding = isCompact ? 0.16 : pxToInches(t.spacing.md);
   const contentX = options.x + padding;
   const contentW = options.width - padding * 2;
   let currentY = options.y + padding;
 
   // 2. BIG NUMBER (Display font)
+  const numFontSize = isCompact ? 36 : 46;
+  const numH = isCompact ? 0.6 : 0.85;
+
   elements.push(
     textBox({
       text: options.number,
       x: contentX,
       y: currentY,
       w: contentW,
-      h: 0.9,
+      h: numH,
       fontFace: t.typography.display.fontFace,
-      fontSize: 48,
+      fontSize: numFontSize,
       color: numColor,
       bold: true,
       valign: 'middle',
       theme: t,
     })
   );
-  currentY += 0.95;
+  currentY += numH + (isCompact ? 0.04 : 0.08);
 
-  // 3. Label
+  // 3. Label (dynamic height based on length)
+  const isLongLabel = options.label.length > 20;
+  const labelFontSize = isCompact ? 14 : 18;
+  const labelH = isLongLabel ? (isCompact ? 0.48 : 0.65) : (isCompact ? 0.32 : 0.42);
+
   elements.push(
     textBox({
       text: options.label,
       x: contentX,
       y: currentY,
       w: contentW,
-      h: 0.4,
+      h: labelH,
       fontFace: t.typography.heading.fontFace,
-      fontSize: t.typography.heading.fontSize - 2, // 21pt
+      fontSize: labelFontSize,
       color: labelColor,
       bold: true,
       theme: t,
     })
   );
-  currentY += 0.45;
+  currentY += labelH + (isCompact ? 0.04 : 0.08);
 
   // 4. Short Explanation (optional)
   if (options.explanation) {
@@ -99,9 +108,9 @@ export function statCard(options: StatCardOptions): SlideElement[] {
         x: contentX,
         y: currentY,
         w: contentW,
-        h: options.height - (currentY - options.y) - padding,
+        h: Math.max(0.4, options.height - (currentY - options.y) - padding),
         fontFace: t.typography.body.fontFace,
-        fontSize: t.typography.caption.fontSize + 2, // 14pt
+        fontSize: isCompact ? 11 : 13,
         color: expColor,
         valign: 'top',
         theme: t,

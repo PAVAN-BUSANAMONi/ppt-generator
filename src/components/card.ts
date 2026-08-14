@@ -38,6 +38,16 @@ export function card(options: CardOptions): SlideElement[] {
   const bodyColor = isDark ? t.colors.line : t.colors.slate;
   const accentColor = options.accent ?? t.colors.teal;
 
+  const isVeryCompact = options.height < 1.6;
+  const isCompact = options.height < 3.0;
+  const isNarrow = options.width < 4.2;
+
+  const pad = isVeryCompact ? 0.10 : isCompact || isNarrow ? 0.14 : pxToInches(t.spacing.md);
+  const iconSize = isVeryCompact ? 0.24 : isCompact || isNarrow ? 0.32 : 0.45;
+
+  const titleFontSize = isVeryCompact ? 13 : isNarrow ? 13.5 : isCompact ? 14.5 : 18;
+  const bodyFontSize = isVeryCompact ? 10.5 : isNarrow || isCompact ? 11 : 13.5;
+
   // 1. Outer rounded container card with shadow & border
   const cardShape: ShapeElement = {
     kind: 'shape',
@@ -52,9 +62,9 @@ export function card(options: CardOptions): SlideElement[] {
   };
   elements.push(cardShape);
 
-  let currentY = options.y + pxToInches(t.spacing.md);
-  const contentX = options.x + pxToInches(t.spacing.md);
-  const contentWidth = options.width - pxToInches(t.spacing.md * 2);
+  let currentY = options.y + pad;
+  const contentX = options.x + pad;
+  const contentWidth = options.width - pad * 2;
 
   // 2. Icon Badge (if provided)
   if (options.icon) {
@@ -62,31 +72,38 @@ export function card(options: CardOptions): SlideElement[] {
       icon: options.icon,
       x: contentX,
       y: currentY,
-      size: 0.55,
+      size: iconSize,
       iconColor: accentColor,
       badgeFill: isDark ? t.colors.ink2 : t.colors.mint2,
       theme: t,
     });
     elements.push(...badgeElements);
-    currentY += 0.65;
+    currentY += iconSize + (isVeryCompact ? 0.05 : 0.08);
   }
 
-  // 3. Card Title / Heading
+  // 3. Card Title / Heading with dynamic height
+  const titleLen = options.title.length;
+  // Estimate character capacity per line: ~0.10 in per char at 18pt, ~0.08 in at 14pt
+  const avgCharWidthInches = titleFontSize >= 16 ? 0.105 : 0.085;
+  const charsPerLine = Math.max(12, Math.floor(contentWidth / avgCharWidthInches));
+  const isMultiLineTitle = titleLen > charsPerLine;
+  const titleH = isMultiLineTitle ? (titleFontSize >= 16 ? 0.62 : 0.45) : (isVeryCompact ? 0.24 : isCompact ? 0.28 : 0.38);
+
   elements.push(
     textBox({
       text: options.title,
       x: contentX,
       y: currentY,
       w: contentWidth,
-      h: 0.5,
+      h: titleH,
       fontFace: t.typography.heading.fontFace,
-      fontSize: t.typography.heading.fontSize,
+      fontSize: titleFontSize,
       color: titleColor,
       bold: true,
       theme: t,
     })
   );
-  currentY += 0.55;
+  currentY += titleH + (isVeryCompact ? 0.03 : 0.06);
 
   // 4. Card Body
   elements.push(
@@ -95,9 +112,9 @@ export function card(options: CardOptions): SlideElement[] {
       x: contentX,
       y: currentY,
       w: contentWidth,
-      h: options.height - (currentY - options.y) - pxToInches(t.spacing.md),
+      h: Math.max(0.3, options.height - (currentY - options.y) - pad),
       fontFace: t.typography.body.fontFace,
-      fontSize: t.typography.body.fontSize - 1, // 17pt for clean card body fit
+      fontSize: bodyFontSize,
       color: bodyColor,
       valign: 'top',
       theme: t,

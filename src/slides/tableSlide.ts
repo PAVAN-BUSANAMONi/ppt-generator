@@ -1,13 +1,17 @@
 /**
- * Archetype 10: tableSlide
- * Data table slide — supports full table layout or hybrid table + native chart composition.
+ * Archetype 7: tableSlide
+ * Data summary slide — structured table + optional companion chart + takeaway callout banner.
+ *
+ * Enforces strict vertical budget:
+ * Title (0.48-1.50) -> Subtitle (1.55-2.10) -> Content Block [Table + Chart] (2.20-5.50) -> Takeaway Banner (5.63-6.21) -> Footer (6.65).
  */
 
-import { SlideDefinition, SlideElement, ChartElement } from '../core/types';
+import { SlideDefinition, SlideElement } from '../core/types';
 import { defaultTheme, pxToInches } from '../design/theme';
 import { TableSlideData } from './types';
 import { title } from '../components/title';
 import { table } from '../components/table';
+import { chart } from '../components/chart';
 import { textBox } from '../components/text';
 import { footer } from '../components/footer';
 
@@ -34,80 +38,103 @@ export function renderTableSlide(data: TableSlideData): SlideDefinition {
 
   const hasChart = Boolean(data.chartData);
   const hasTakeaway = Boolean(data.keyTakeaway);
+  const hasLongSubtitle = Boolean(data.subtitle && data.subtitle.length > 50);
+
+  const contentY = hasLongSubtitle ? 2.35 : 2.15;
+  const contentH = hasTakeaway ? (hasLongSubtitle ? 3.12 : 3.30) : (hasLongSubtitle ? 4.00 : 4.20);
 
   const tableW = hasChart ? cw * 0.56 : cw;
-  const tableH = hasTakeaway ? 3.4 : 4.3;
 
-  // 1. Native Table
+  // Compute adaptive column widths based on number of columns if not provided
+  let colWidths = data.colWidths;
+  if (!colWidths) {
+    const colCount = data.headers.length;
+    if (colCount === 3) {
+      colWidths = [tableW * 0.30, tableW * 0.25, tableW * 0.45];
+    } else if (colCount === 4) {
+      colWidths = [tableW * 0.28, tableW * 0.32, tableW * 0.20, tableW * 0.20];
+    }
+  }
+
+  // 1. Table Component
   elements.push(
     table({
       headers: data.headers,
       rows: data.rows,
+      colWidths,
       x: ml,
-      y: 2.2,
+      y: contentY,
       width: tableW,
-      height: tableH,
-      alternateRows: true,
+      height: contentH,
+      headerFill: t.colors.dark,
+      headerColor: t.colors.white,
       theme: t,
     })
   );
 
-  // 2. Native Chart (if provided)
-  if (data.chartData) {
-    const chartX = ml + cw * 0.58;
-    const chartW = cw * 0.42;
+  // 2. Companion Chart (if provided)
+  if (hasChart && data.chartData) {
+    const chartX = ml + tableW + 0.3;
+    const chartW = cw - tableW - 0.3;
 
-    const chartEl: ChartElement = {
-      kind: 'chart',
-      chartType: data.chartData.chartType,
-      data: [
-        {
-          name: data.chartData.title ?? 'Composition',
-          labels: data.chartData.labels,
-          values: data.chartData.values,
-        },
-      ],
-      position: { x: chartX, y: 2.2 },
-      size: { w: chartW, h: tableH },
-      options: {
-        showLegend: true,
-        legendPos: 'b',
-        showTitle: Boolean(data.chartData.title),
-        title: data.chartData.title,
-        chartColors: data.chartData.colors ?? [
-          hex(t.colors.teal),
-          hex(t.colors.blue),
-          hex(t.colors.gold),
-          hex(t.colors.slate),
+    elements.push(
+      chart({
+        chartType: data.chartData.chartType as any,
+        data: [
+          {
+            name: data.chartData.title || 'Data Series',
+            labels: data.chartData.labels,
+            values: data.chartData.values,
+          },
         ],
-      },
-    };
-    elements.push(chartEl);
+        x: chartX,
+        y: contentY,
+        w: chartW,
+        h: contentH,
+        title: data.chartData.title,
+        showLegend: false,
+        theme: t,
+      })
+    );
   }
 
-  // 3. Key Takeaway callout box at bottom
-  if (data.keyTakeaway) {
+  // 3. Key Takeaway Banner (Guaranteed placed AFTER table/chart with zero collision)
+  if (hasTakeaway && data.keyTakeaway) {
+    const takeawayY = 5.63;
+    const takeawayH = 0.58;
+
+    // Outer background box with border
+    elements.push({
+      kind: 'shape',
+      shapeType: 'rounded-rect',
+      fill: hex(t.colors.mint2),
+      stroke: hex(t.colors.gold),
+      strokeWidth: 1,
+      rectRadius: 0.08,
+      position: { x: ml, y: takeawayY },
+      size: { w: cw, h: takeawayH },
+    });
+
+    // Takeaway text content (strips duplicate 'KEY TAKEAWAY:' prefix if already present)
+    const cleanTakeaway = data.keyTakeaway.replace(/^KEY TAKEAWAY:\s*/i, '').trim();
     elements.push(
       textBox({
-        text: `KEY TAKEAWAY: ${data.keyTakeaway}`,
-        x: ml,
-        y: 2.2 + tableH + 0.2,
-        w: cw,
-        h: 0.6,
-        fontFace: t.typography.small.fontFace,
-        fontSize: t.typography.small.fontSize,
+        text: `KEY TAKEAWAY: ${cleanTakeaway}`,
+        x: ml + 0.15,
+        y: takeawayY + 0.08,
+        w: cw - 0.3,
+        h: takeawayH - 0.16,
+        fontFace: t.typography.body.fontFace,
+        fontSize: 12,
         color: t.colors.ink,
         bold: true,
-        boxFill: t.colors.goldSoft,
-        boxStroke: t.colors.gold,
-        padding: 10,
         valign: 'middle',
         theme: t,
       })
     );
   }
 
-  // Footer
+  // 4. Footer
   elements.push(
     ...footer({
       presentationName: data.title,

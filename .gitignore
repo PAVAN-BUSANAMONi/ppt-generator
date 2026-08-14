@@ -2,8 +2,14 @@ node_modules/
 outputs/
 work/
 src/work/
+*.log
+
+# Ignore loose media files except in samples
 *.pptx
 *.png
 *.webp
 *.zip
-*.log
+
+# Track sample reference decks
+!samples/
+!samples/*

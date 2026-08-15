@@ -93,20 +93,30 @@ export class AIImageProvider {
 
     // 2. Synthesize High-Resolution Master Asset (Quality Gate - Step 51C)
     const assetId = req.id || `ai_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
-    const filename = `${assetId}.png`;
+    const filename = `${assetId}.jpg`;
     const localPath = path.join(this.assetsDir, filename);
 
     // If local asset does not already exist, create an optimized 16:9 master image
     if (!fs.existsSync(localPath)) {
-      const svgGraphic = this.createThematicMasterSvg(req.topic, req.slideTitle, req.style || 'editorial');
+      let success = false;
       try {
-        const sharp = (await import('sharp')).default;
-        await sharp(Buffer.from(svgGraphic))
-          .resize({ width: 1920, height: 1080 })
-          .png({ compressionLevel: 8 })
-          .toFile(localPath);
-      } catch {
-        fs.writeFileSync(localPath, Buffer.from(svgGraphic));
+        // Try high-fidelity Pollinations AI model (Flux / SDXL)
+        success = await this.fetchPollinationsImage(prompt, localPath);
+      } catch (err: any) {
+        console.warn(`[AIImageProvider] Pollinations AI fetch failed: ${err.message}. Using procedural fallback.`);
+      }
+
+      if (!success || !fs.existsSync(localPath) || fs.statSync(localPath).size < 2000) {
+        const svgGraphic = this.createThematicMasterSvg(req.topic, req.slideTitle, req.style || 'editorial');
+        try {
+          const sharp = (await import('sharp')).default;
+          await sharp(Buffer.from(svgGraphic))
+            .resize({ width: 2560, height: 1440, fit: 'inside' })
+            .jpeg({ quality: 95, mozjpeg: true, chromaSubsampling: '4:4:4' })
+            .toFile(localPath);
+        } catch {
+          fs.writeFileSync(localPath, Buffer.from(svgGraphic));
+        }
       }
     }
 
@@ -115,10 +125,10 @@ export class AIImageProvider {
       source: 'local-ai',
       sourceUrl: `local://ai-generator/${assetId}`,
       title: `${req.topic} — ${req.slideTitle} (${req.style || 'AI Visual'})`,
-      creator: 'Local AI Generator',
-      license: 'AI-Generated (Public Domain / Internal)',
-      width: 1920,
-      height: 1080,
+      creator: 'Local AI Generator / Pollinations',
+      license: 'AI-Generated (Public Domain / Free Use)',
+      width: 2560,
+      height: 1440,
       localPath,
     };
 
@@ -147,6 +157,69 @@ export class AIImageProvider {
         reason: 'AI image generated and verified against exact slide context and semantic gates.',
       },
     };
+  }
+
+  private async fetchPollinationsImage(prompt: string, destPath: string): Promise<boolean> {
+    const cleanPrompt = encodeURIComponent(prompt.substring(0, 280));
+    const seed = Math.floor(Math.random() * 1000000);
+    const url = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=1920&height=1080&nologo=true&seed=${seed}&model=flux`;
+
+    return new Promise((resolve) => {
+      const https = require('https');
+      const fs = require('fs');
+
+      const download = (targetUrl: string, maxRedirects: number = 3) => {
+        if (maxRedirects < 0) {
+          resolve(false);
+          return;
+        }
+
+        const req = https.get(
+          targetUrl,
+          {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+            },
+            timeout: 18000,
+          },
+          (res: any) => {
+            if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+              const redirect = res.headers.location.startsWith('http')
+                ? res.headers.location
+                : new URL(res.headers.location, targetUrl).toString();
+              download(redirect, maxRedirects - 1);
+              return;
+            }
+
+            if (res.statusCode === 200) {
+              const fileStream = fs.createWriteStream(destPath);
+              res.pipe(fileStream);
+              fileStream.on('finish', () => {
+                fileStream.close(() => {
+                  if (fs.existsSync(destPath) && fs.statSync(destPath).size > 5000) {
+                    resolve(true);
+                  } else {
+                    resolve(false);
+                  }
+                });
+              });
+              fileStream.on('error', () => resolve(false));
+            } else {
+              resolve(false);
+            }
+          }
+        );
+
+        req.on('error', () => resolve(false));
+        req.on('timeout', () => {
+          req.destroy();
+          resolve(false);
+        });
+      };
+
+      download(url, 3);
+    });
   }
 
   private createThematicMasterSvg(topic: string, title: string, style: string): string {

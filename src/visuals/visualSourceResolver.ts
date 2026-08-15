@@ -164,6 +164,7 @@ export class VisualSourceResolver {
 
     // If real image was unavailable or rejected, check if AI image generation is enabled
     if (config.aiEnabled) {
+      console.log(`[VisualSourceResolver] Real photo unavailable for "${req.slideTitle}". Synthesizing high-precision AI visual asset...`);
       const aiRes = await this.aiProvider.generateImage({
         topic: req.topic,
         sectionTitle: req.sectionTitle,
@@ -176,6 +177,7 @@ export class VisualSourceResolver {
       });
 
       if (aiRes.decisionReport.status === 'ACCEPTED' && aiRes.asset) {
+        console.log(`✔ AI Visual Synthesized for "${req.slideTitle}" (${aiRes.asset.source}) -> ${aiRes.asset.localPath}`);
         return {
           asset: aiRes.asset,
           attribution: aiRes.attribution,
@@ -187,6 +189,8 @@ export class VisualSourceResolver {
             reason: 'Real photo unavailable; successfully resolved high-precision AI visual asset.',
           },
         };
+      } else {
+        console.warn(`⚠️ AI generation did not accept: ${aiRes.decisionReport.reason}`);
       }
     }
 
@@ -198,7 +202,7 @@ export class VisualSourceResolver {
       decisionReport: {
         policyUsed: policy,
         finalDecision: 'NATIVE_FALLBACK',
-        reason: 'Both real and AI providers bypassed or unavailable. Using clean native structured graphics.',
+        reason: 'Real image rejected and AI generation bypassed/unavailable.',
       },
     };
   }

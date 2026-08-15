@@ -37,6 +37,7 @@ export function statCard(options: StatCardOptions): SlideElement[] {
   const labelColor = isDark ? t.colors.white : t.colors.ink;
   const expColor = isDark ? t.colors.line : t.colors.slate;
 
+  const isVeryCompact = options.height < 1.35;
   const isCompact = options.height < 3.0;
 
   // 1. Container shape
@@ -52,6 +53,66 @@ export function statCard(options: StatCardOptions): SlideElement[] {
     size: { w: options.width, h: options.height },
   };
   elements.push(cardShape);
+
+  if (isVeryCompact) {
+    // Horizontal Split Layout for compact stacked metric cards
+    const pad = 0.12;
+    const numWidth = Math.min(2.0, options.width * 0.35);
+    const textX = options.x + numWidth + pad;
+    const textW = options.width - numWidth - pad * 2;
+
+    // Big Number on Left
+    elements.push(
+      textBox({
+        text: options.number,
+        x: options.x + pad,
+        y: options.y + pad,
+        w: numWidth,
+        h: options.height - pad * 2,
+        fontFace: t.typography.display.fontFace,
+        fontSize: 24,
+        color: numColor,
+        bold: true,
+        valign: 'middle',
+        theme: t,
+      })
+    );
+
+    // Label on Right (Top)
+    elements.push(
+      textBox({
+        text: options.label,
+        x: textX,
+        y: options.y + pad,
+        w: textW,
+        h: 0.32,
+        fontFace: t.typography.heading.fontFace,
+        fontSize: 12.5,
+        color: labelColor,
+        bold: true,
+        theme: t,
+      })
+    );
+
+    // Explanation on Right (Bottom)
+    if (options.explanation) {
+      elements.push(
+        textBox({
+          text: options.explanation,
+          x: textX,
+          y: options.y + pad + 0.32,
+          w: textW,
+          h: options.height - pad * 2 - 0.32,
+          fontFace: t.typography.body.fontFace,
+          fontSize: 10,
+          color: expColor,
+          theme: t,
+        })
+      );
+    }
+
+    return elements;
+  }
 
   const padding = isCompact ? 0.16 : pxToInches(t.spacing.md);
   const contentX = options.x + padding;
@@ -108,11 +169,10 @@ export function statCard(options: StatCardOptions): SlideElement[] {
         x: contentX,
         y: currentY,
         w: contentW,
-        h: Math.max(0.4, options.height - (currentY - options.y) - padding),
+        h: isCompact ? 0.6 : 0.8,
         fontFace: t.typography.body.fontFace,
-        fontSize: isCompact ? 11 : 13,
+        fontSize: isCompact ? 11 : 13.5,
         color: expColor,
-        valign: 'top',
         theme: t,
       })
     );

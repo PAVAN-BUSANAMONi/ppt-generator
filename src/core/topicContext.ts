@@ -92,6 +92,11 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
   ) {
     domain = 'blockchain-computing';
   } else if (
+    lower.includes('municipal') ||
+    lower.includes('hyderabad') ||
+    lower.includes('ghmc') ||
+    lower.includes('urban governance') ||
+    lower.includes('corporation') ||
     lower.includes('constitution') ||
     lower.includes('rights') ||
     lower.includes('law') ||
@@ -255,7 +260,42 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
         },
       };
 
-    case 'law-governance':
+    case 'law-governance': {
+      const isHyderabadMunicipal =
+        lower.includes('hyderabad') ||
+        lower.includes('ghmc') ||
+        lower.includes('municipal') ||
+        lower.includes('corporation');
+
+      if (isHyderabadMunicipal) {
+        return {
+          rawTopic: topic,
+          normalizedTitle: 'Municipal Corporation in Hyderabad: Governance, Infrastructure & Urban Administration',
+          slug,
+          domain: 'law-governance',
+          keywords,
+          eyebrows: {
+            title: 'URBAN GOVERNANCE, INFRASTRUCTURE & CIVIC SERVICES',
+            overview: 'FOUR-PILLAR CIVIC & ADMINISTRATIVE FRAMEWORK',
+            concept: 'ZONAL DECENTRALIZATION & WARD ADMINISTRATION',
+            process: 'MUNICIPAL SERVICE DELIVERY & CITIZEN E-GOVERNANCE',
+            comparison: 'CONVENTIONAL MANUAL CIVIC OPERATIONS vs DIGITAL SMART GOVERNANCE',
+            statistics: 'GHMC ADMINISTRATIVE METRICS & CIVIC REACH',
+            table: 'MUNICIPAL REVENUE STREAMS & CAPITAL EXPENDITURE ALLOCATION',
+            caseStudy: 'STRATEGIC ROAD DEVELOPMENT PLAN (SRDP) & INFRASTRUCTURE MODERNIZATION',
+            takeaways: 'STRATEGIC REFORMS FOR SUSTAINABLE URBAN GOVERNANCE',
+            conclusion: 'BUILDING A LIVEABLE, CLIMATE-RESILIENT SMART MEGACITY',
+          },
+          imageQueries: {
+            hero: { query: 'charminar hyderabad monument city', purpose: 'Iconic Charminar monument and urban historic landscape of Hyderabad' },
+            concept: { query: 'hyderabad city skyline urban architecture', purpose: 'Modern urban infrastructure, flyovers, and cityscape in Hyderabad' },
+            caseStudy: { query: 'cable stayed bridge modern road infrastructure city', purpose: 'Strategic road development and iconic cable-stayed bridge infrastructure' },
+            process: { query: 'municipal workers waste management sanitation city street', purpose: 'Urban municipal sanitation, solid waste management, and civic operations' },
+            statistics: { query: 'hitec city hyderabad business district buildings', purpose: 'HITEC City financial district and modern municipal expansion in Hyderabad' },
+          },
+        };
+      }
+
       return {
         rawTopic: topic,
         normalizedTitle: topic,
@@ -282,6 +322,7 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
           statistics: { query: 'constitution document parchment law book', purpose: 'Constitutional law document and legal archives' },
         },
       };
+    }
 
     case 'healthcare-medicine':
       return {

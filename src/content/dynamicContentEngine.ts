@@ -696,8 +696,226 @@ export function synthesizeDynamicSlides(
       return [slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slide9, slide10];
     }
 
-    // 3. INDIAN CONSTITUTION & GOVERNANCE
+    // 3. INDIAN CONSTITUTION & GOVERNANCE / HYDERABAD MUNICIPAL CORPORATION
     case 'law-governance': {
+      const isHyderabadMunicipal =
+        slug.includes('hyderabad') ||
+        slug.includes('municipal') ||
+        slug.includes('ghmc') ||
+        normalizedTitle.toLowerCase().includes('hyderabad') ||
+        normalizedTitle.toLowerCase().includes('municipal') ||
+        normalizedTitle.toLowerCase().includes('ghmc') ||
+        (ctx.rawTopic && ctx.rawTopic.toLowerCase().includes('hyderabad')) ||
+        (ctx.rawTopic && ctx.rawTopic.toLowerCase().includes('municipal'));
+
+      if (isHyderabadMunicipal) {
+        const slide1: TitleSlideData = {
+          id: `${slug}-01-title`,
+          type: 'title',
+          eyebrow: eyebrows.title,
+          title: 'Municipal Corporation in Hyderabad: Governance & Infrastructure',
+          subtitle: 'A Comprehensive Analysis of GHMC Zonal Decentralization, Mega-Infrastructure Delivery, Digital e-Governance, and Sustainable Urban Service Management',
+          image: assets.heroPath,
+          dark: true,
+          slideNumber: 1,
+          totalSlides: slideCount,
+          notes: `Welcome to this presentation on "Municipal Corporation in Hyderabad: Governance & Infrastructure". Today we examine the institutional architecture of Greater Hyderabad Municipal Corporation (GHMC), covering zonal administration, mega-infrastructure projects, waste-to-energy management, and digital citizen services.${assets.heroAttribution ? `\n\n[Image Credit: ${assets.heroAttribution}]` : ''}${userNotes}`,
+        };
+
+        const slide2: OverviewSlideData = {
+          id: `${slug}-02-overview`,
+          type: 'overview',
+          eyebrow: eyebrows.overview,
+          title: 'Four Pillars of Hyderabad Municipal Administration',
+          subtitle: 'Structural core domains governing Greater Hyderabad Municipal Corporation 650 sq km civic footprint.',
+          agendaItems: [
+            { number: '1', title: 'Zonal & Ward Administration', description: 'Decentralized governance across 6 zones, 30 circles, and 150 electoral wards serving 10M+ citizens.', icon: 'Shield' },
+            { number: '2', title: 'Mega-Infrastructure (SRDP)', description: 'Strategic Road Development Plan, multi-level flyovers, underpasses, and cable-stayed bridges.', icon: 'Layers' },
+            { number: '3', title: 'Solid Waste & Sanitation', description: '2,500+ Swachh Auto Tippers, 7,000 TPD waste processing, and 24 MW Jawaharnagar Waste-to-Energy plant.', icon: 'Activity' },
+            { number: '4', title: 'Digital e-Governance (TS-bPASS)', description: 'Single-window building permits, online property tax assessments, and automated citizen grievance SLAs.', icon: 'CheckCircle' },
+          ],
+          slideNumber: 2,
+          totalSlides: slideCount,
+          notes: 'Our presentation analyzes four core operational pillars: decentralized zonal administration, mega-infrastructure investments under SRDP, modern scientific solid waste management, and end-to-end digital municipal service delivery.',
+        };
+
+        const slide3: ConceptSlideData = {
+          id: `${slug}-03-concept`,
+          type: 'concept',
+          eyebrow: eyebrows.concept,
+          title: 'Zonal Administrative Architecture & Decentralization',
+          subtitle: 'How a 3-tier organizational hierarchy balances centralized policy with hyper-local ward-level execution.',
+          mainConcept: {
+            title: 'Hierarchical Administrative Devolution',
+            description: 'GHMC operates through a tiered decentralization structure. Headed by the IAS Municipal Commissioner and elected Mayor, executive authority flows down to 6 Zonal Commissioners, 30 Deputy Commissioners (Circles), and 150 Ward Committees, ensuring responsive public service delivery across 650 km².',
+          },
+          cards: [
+            {
+              title: '6 Administrative Zones',
+              body: 'Charminar, Khairatabad, Secunderabad, Serilingampally, Kukatpally, and LB Nagar each headed by a Zonal Commissioner managing localized civic works, health, and urban forestry.',
+              icon: 'Shield',
+            },
+            {
+              title: '30 Circle-Level Operations',
+              body: '30 Circles act as direct frontline delivery units for town planning, sanitation, road maintenance, trade licenses, birth/death registrations, and property tax collection.',
+              icon: 'Layers',
+            },
+          ],
+          image: assets.conceptPath,
+          slideNumber: 3,
+          totalSlides: slideCount,
+          notes: `This slide outlines GHMC organizational structure: centralized strategic policy under the Commissioner, decentralized zonal administration across 6 zones, and granular circle-level civic operations across 30 circles.${assets.conceptAttribution ? `\n\n[Image Credit: ${assets.conceptAttribution}]` : ''}`,
+        };
+
+        const slide4: ProcessSlideData = {
+          id: `${slug}-04-process`,
+          type: 'process',
+          eyebrow: eyebrows.process,
+          title: 'Integrated Solid Waste Management & Resource Recovery',
+          subtitle: 'End-to-end municipal lifecycle from doorstep source segregation to scientific processing and 24 MW clean power generation.',
+          steps: [
+            { stepNumber: 1, title: 'Doorstep Segregated Collection', description: '2,500+ GPS-tracked Swachh Auto Tippers collect segregated wet and dry waste directly from households.', icon: 'Activity' },
+            { stepNumber: 2, title: 'Secondary Transfer & Compaction', description: 'Modern transfer stations compact and containerize ~7,000 tonnes of daily garbage into sealed haulers.', icon: 'Layers' },
+            { stepNumber: 3, title: 'Jawaharnagar 24 MW WtE Plant', description: 'Refuse-Derived Fuel (RDF) is combusted in a modern 24 MW plant, generating clean electricity for the grid.', icon: 'Sun' },
+            { stepNumber: 4, title: 'C&D Recycling & Composting', description: 'Construction waste is recycled into paver blocks, while organic wet waste is converted to city compost.', icon: 'CheckCircle' },
+          ],
+          image: assets.processPath,
+          slideNumber: 4,
+          totalSlides: slideCount,
+          notes: `The municipal waste lifecycle in Hyderabad: doorstep segregated collection via 2,500+ Swachh tippers, secondary transfer compaction, thermal waste-to-energy power generation at Jawaharnagar, and C&D material recycling.${assets.processAttribution ? `\n\n[Image Credit: ${assets.processAttribution}]` : ''}`,
+        };
+
+        const slide5: ComparisonSlideData = {
+          id: `${slug}-05-comparison`,
+          type: 'comparison',
+          eyebrow: eyebrows.comparison,
+          title: 'Conventional Manual Operations vs Smart Governance',
+          subtitle: 'Contrasting legacy bureaucratic municipal bottlenecks with next-generation digital e-governance.',
+          leftPanel: {
+            title: 'Conventional Manual Operations (Legacy)',
+            accentColor: 'gold',
+            points: [
+              'Physical paperwork for building permits requiring multiple in-person department clearances and manual site inspections.',
+              'Cash-counter property tax payments and manual ledger assessment leading to tax evasion and under-reporting.',
+              'Unmonitored garbage trucks and arbitrary bin clearance causing overflow and civic hygiene hazards.',
+              'Manual paper grievance petitions taking 30–60 days with zero tracking visibility for citizens.',
+            ],
+          },
+          rightPanel: {
+            title: 'Smart Municipal Governance (GHMC Digital)',
+            accentColor: 'blue',
+            points: [
+              'TS-bPASS instant online building approvals with self-certification up to 500 sq yards in 21 days.',
+              '100% GIS-mapped property tax database with digital UPI payment gateway and automated early-bird rebates.',
+              'RFID-tagged bins and GPS real-time route optimization for waste collection tippers with automated tracking dashboards.',
+              'GHMC Mobile App & WhatsApp bot with SLA-bound automated ticketing resolving 85%+ civic grievances within 48 hours.',
+            ],
+          },
+          slideNumber: 5,
+          totalSlides: slideCount,
+          notes: 'Here we contrast legacy manual municipal workflows with GHMC digital transformation. Platforms like TS-bPASS, GIS tax mapping, and mobile grievance tracking have dramatically improved administrative transparency and turnaround speeds.',
+        };
+
+        const slide6: StatisticsSlideData = {
+          id: `${slug}-06-statistics`,
+          type: 'statistics',
+          eyebrow: eyebrows.statistics,
+          title: 'GHMC Administrative Scale & Operational Benchmarks',
+          subtitle: 'Key quantitative indicators defining municipal governance reach and infrastructure across Greater Hyderabad.',
+          metrics: [
+            { number: '650 km²', label: 'Total Civic Jurisdiction', explanation: 'Spanning 3 districts: Hyderabad, Medchal-Malkajgiri, and Ranga Reddy.' },
+            { number: '150 Wards', label: 'Grassroots Electoral Units', explanation: 'Organized under 30 administrative circles and 6 major municipal zones.' },
+            { number: '10M+', label: 'Resident Population Served', explanation: 'Providing water, sanitation, roads, and civic amenities to over 10 million citizens.' },
+            { number: '₹8,400 Cr', label: 'Annual Municipal Budget', explanation: 'Allocation dedicated to capital infrastructure, sanitation, greening, and debt servicing.' },
+          ],
+          image: assets.statisticsPath,
+          slideNumber: 6,
+          totalSlides: slideCount,
+          notes: `These vital metrics define the massive scale of Hyderabad municipal administration: 650 square kilometers of jurisdiction, 150 electoral wards, a population of over 10 million residents, and an annual budget exceeding ₹8,400 Crore.${assets.statisticsAttribution ? `\n\n[Image Credit: ${assets.statisticsAttribution}]` : ''}`,
+        };
+
+        const slide7: TableSlideData = {
+          id: `${slug}-07-table`,
+          type: 'table',
+          eyebrow: eyebrows.table,
+          title: 'GHMC Revenue Sources & Capital Expenditure Allocation',
+          subtitle: 'Structured breakdown of fiscal revenues and municipal investment priorities based on GHMC annual budget.',
+          headers: ['Municipal Sector', 'Budget Share', 'Key Revenue / Expense Heads', 'Strategic Impact & Milestones'],
+          rows: [
+            ['Property Tax & Town Planning', '38% Revenue', 'Commercial & residential assessments, TS-bPASS fees', 'Core own-source revenue funding civic maintenance'],
+            ['Strategic Road Development (SRDP)', '32% Capex', 'Grade separators, multi-level flyovers, underpasses', 'Eliminating 50+ major traffic congestion bottlenecks'],
+            ['Sanitation & Waste Management', '22% Capex/Opex', 'Swachh Tippers, Jawaharnagar 24 MW WtE plant', 'Achieving 100% scientific processing of 7,000 TPD waste'],
+            ['Haritha Haram & Urban Forestry', '8% Capex', 'Urban lung spaces, Miyawaki forests, park upgrades', 'Expanding city green cover from 16% to over 33%'],
+            ['Comprehensive Stormwater Drainage', '15% Capex', 'Strategic Nala Development Programme (SNDP)', 'Mitigating seasonal urban flooding across low-lying zones'],
+            ['Municipal Bonds & Borrowing', '15% Revenue', 'AA-rated municipal bond issuances and bank loans', 'Bridge-funding long-term capital mobility assets'],
+          ],
+          keyTakeaway: 'Property tax and town planning receipts form the backbone of GHMC own-source revenue, funding landmark infrastructure under SRDP and SNDP.',
+          slideNumber: 7,
+          totalSlides: slideCount,
+          notes: 'This financial matrix details GHMC revenue structure and capital expenditure allocations, highlighting major investments into urban road mobility, scientific sanitation, flood mitigation, and urban forestry.',
+        };
+
+        const slide8: CaseStudySlideData = {
+          id: `${slug}-08-case-study`,
+          type: 'case-study',
+          eyebrow: eyebrows.caseStudy,
+          title: 'Strategic Road Development Plan (SRDP) & Flyover Network',
+          subtitle: 'Engineering urban mobility transformation through multi-level grade separators and iconic bridge infrastructure.',
+          context: 'Rapid urbanization and IT corridor growth in western Hyderabad causing extreme commuter congestion and traffic delays.',
+          challenge: 'Severely constrained right-of-way, complex land acquisition hurdles, and intersecting railway lines across key transit arteries.',
+          solution: 'GHMC executed the ₹8,000+ Crore SRDP, constructing 35+ grade separators, underpasses, and the iconic Durgam Cheruvu Extradosed Cable-Stayed Bridge.',
+          result: 'Reduced peak-hour commute times by 45% between Jubilee Hills and Mindspace HITEC City, unlocking ₹10,000+ Cr in regional economic productivity.',
+          image: assets.caseStudyPath,
+          slideNumber: 8,
+          totalSlides: slideCount,
+          notes: `Our case study examines the Strategic Road Development Plan (SRDP). Through multi-level flyovers, underpasses, and the landmark Durgam Cheruvu bridge, GHMC resolved critical traffic bottlenecks across Hyderabad IT corridor.${assets.caseStudyAttribution ? `\n\n[Image Credit: ${assets.caseStudyAttribution}]` : ''}`,
+        };
+
+        const slide9: KeyTakeawaysSlideData = {
+          id: `${slug}-09-takeaways`,
+          type: 'takeaways',
+          eyebrow: eyebrows.takeaways,
+          title: 'Strategic Imperatives for Future Municipal Governance',
+          subtitle: 'Four high-impact institutional reforms to sustain Hyderabad trajectory as a global smart megacity.',
+          takeaways: [
+            {
+              number: 1,
+              title: 'Expand Strategic Nala Development (SNDP Phase-II)',
+              description: 'Modernize the city 1,200 km stormwater canal network with concrete retaining walls to eliminate urban inundation.',
+            },
+            {
+              number: 2,
+              title: 'Deepen Financial Autonomy & Green Municipal Bonds',
+              description: 'Leverage credit ratings to issue green municipal bonds for climate-resilient water recycling and electric fleet expansion.',
+            },
+            {
+              number: 3,
+              title: 'Institutionalize 100% Decentralized Ward Committees',
+              description: 'Empower local citizen ward committees with discretionary micro-budgets for neighborhood parks, footpaths, and streetlights.',
+            },
+          ],
+          slideNumber: 9,
+          totalSlides: slideCount,
+          notes: 'Three strategic policy directives: scaling stormwater canal modernization under SNDP, issuing green municipal bonds, and empowering ward committees with participatory budgeting.',
+        };
+
+        const slide10: ConclusionSlideData = {
+          id: `${slug}-10-conclusion`,
+          type: 'conclusion',
+          eyebrow: eyebrows.conclusion,
+          title: 'Towards a Global, Climate-Resilient Hyderabad',
+          subtitle: 'Sustaining citizen-first municipal governance, green infrastructure, and world-class civic quality of life.',
+          summaryText: 'The Greater Hyderabad Municipal Corporation stands as a model of progressive urban governance in India. By combining decentralized administration, bold mega-infrastructure investments, and citizen-centric digital platforms, Hyderabad is pioneering a sustainable, resilient, and inclusive urban future.',
+          finalCallToAction: 'EMPOWERING CITIZENS, BUILDING RESILIENT INFRASTRUCTURE, AND DELIVERING EXCELLENCE IN URBAN GOVERNANCE.',
+          dark: true,
+          slideNumber: 10,
+          totalSlides: slideCount,
+          notes: 'In conclusion, Greater Hyderabad Municipal Corporation is transforming urban administration through infrastructure modernization, green initiatives, and digital governance, ensuring an exceptional quality of life for all citizens. Thank you.',
+        };
+
+        return [slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slide9, slide10];
+      }
+
       const slide1: TitleSlideData = {
         id: `${slug}-01-title`,
         type: 'title',

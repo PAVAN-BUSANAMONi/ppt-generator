@@ -160,7 +160,7 @@ export function determineSubjectDomain(query: string): DomainRules {
     };
   }
 
-  // 2. LAW, CONSTITUTION & GOVERNANCE (Indian Constitution, Courts, Law)
+  // 2. LAW, CONSTITUTION & GOVERNANCE (Indian Constitution, Municipal Corporations, Urban Governance)
   if (
     qLower.includes('constitution') ||
     qLower.includes('supreme court') ||
@@ -170,7 +170,12 @@ export function determineSubjectDomain(query: string): DomainRules {
     qLower.includes('justice') ||
     qLower.includes('gavel') ||
     qLower.includes('law') ||
-    qLower.includes('court')
+    qLower.includes('court') ||
+    qLower.includes('municipal') ||
+    qLower.includes('hyderabad') ||
+    qLower.includes('ghmc') ||
+    qLower.includes('urban governance') ||
+    qLower.includes('corporation')
   ) {
     return {
       domain: 'law-governance',
@@ -179,18 +184,22 @@ export function determineSubjectDomain(query: string): DomainRules {
         'supreme court', 'court', 'law', 'justice', 'gavel', 'legal', 'judge',
         'courtroom', 'lady justice', 'scales of justice', 'statue of justice',
         'rights', 'jurisprudence', 'charter', 'treaty', 'india', 'indian',
-        'delhi', 'ashoka', 'bench', 'statue', 'scales', 'book'
+        'delhi', 'ashoka', 'bench', 'statue', 'scales', 'book',
+        'hyderabad', 'charminar', 'ghmc', 'municipal', 'corporation', 'urban',
+        'civic', 'governance', 'infrastructure', 'bridge', 'skyline', 'hitec city',
+        'sanitation', 'city', 'ward', 'zonal', 'telangana', 'building', 'street', 'road'
       ],
       forbiddenKeywords: [
         'us supreme court', 'united states supreme court', 'scotus',
         'washington dc', 'american supreme court', 'uk supreme court',
         'westminster', 'french constitution', 'texas', 'california',
-        'white house', 'capitol hill', 'us capitol', 'department of justice building washington'
+        'white house', 'capitol hill', 'us capitol', 'department of justice building washington',
+        'testis', 'tumor biopsy'
       ],
     };
   }
 
-  // 3. CLIMATE CHANGE & ENVIRONMENT (Global Warming, Decarbonization)
+  // 3. CLIMATE CHANGE & ENVIRONMENT (Global Warming, Air Pollution, Decarbonization)
   if (
     qLower.includes('climate') ||
     qLower.includes('warming') ||
@@ -203,6 +212,8 @@ export function determineSubjectDomain(query: string): DomainRules {
     qLower.includes('wind turbine') ||
     qLower.includes('greenhouse gas') ||
     qLower.includes('pollution') ||
+    qLower.includes('aqi') ||
+    qLower.includes('smog') ||
     qLower.includes('weather') ||
     qLower.includes('atmosphere') ||
     qLower.includes('meteorolog') ||
@@ -215,7 +226,9 @@ export function determineSubjectDomain(query: string): DomainRules {
         'emissions', 'temperature', 'renewable', 'solar', 'wind', 'turbine',
         'atmosphere', 'sea level', 'ocean', 'greenhouse', 'energy transition',
         'decarbonization', 'photovoltaic', 'smog', 'pollution', 'river', 'water', 'environment',
-        'station', 'weather', 'meteorological', 'observatory', 'instrumentation', 'sensor', 'monitoring'
+        'station', 'weather', 'meteorological', 'observatory', 'instrumentation', 'sensor', 'monitoring',
+        'air', 'traffic', 'vehicles', 'transit', 'bus', 'urban', 'aqi', 'particulate', 'chimney',
+        'factory', 'stubble', 'smoke', 'cars', 'road', 'haze', 'city', 'congestion'
       ],
       forbiddenKeywords: [
         'tractor harvest', 'combine harvester', 'soybean planting',

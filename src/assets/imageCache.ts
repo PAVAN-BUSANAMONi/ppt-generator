@@ -36,10 +36,10 @@ export async function cacheImageAsset(
   try {
     const downloadedPath = await downloadFile(asset.sourceUrl, rawPath);
     if (downloadedPath && fs.existsSync(downloadedPath) && fs.statSync(downloadedPath).size > 1000) {
-      // 1. Optimize image to high-fidelity studio master (2560x1440 QHD, 4:4:4 chroma, pristine visual quality ~800KB-1.5MB)
+      // 1. Optimize image to pristine 4K studio master (3840x2160 UHD, 4:4:4 chroma, pristine visual quality ~1.8MB-2.8MB per image)
       await sharp(downloadedPath)
-        .resize({ width: 2560, height: 1440, fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 94, mozjpeg: true, chromaSubsampling: '4:4:4' })
+        .resize({ width: 3840, height: 2160, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 98, mozjpeg: true, chromaSubsampling: '4:4:4' })
         .toFile(localPath);
 
       // 2. Generate thumbnail for SVG preview rendering

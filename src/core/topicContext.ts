@@ -289,9 +289,9 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
           imageQueries: {
             hero: { query: 'charminar hyderabad monument city', purpose: 'Iconic Charminar monument and urban historic landscape of Hyderabad' },
             concept: { query: 'hyderabad city skyline urban architecture', purpose: 'Modern urban infrastructure, flyovers, and cityscape in Hyderabad' },
-            caseStudy: { query: 'cable stayed bridge modern road infrastructure city', purpose: 'Strategic road development and iconic cable-stayed bridge infrastructure' },
-            process: { query: 'municipal workers waste management sanitation city street', purpose: 'Urban municipal sanitation, solid waste management, and civic operations' },
-            statistics: { query: 'hitec city hyderabad business district buildings', purpose: 'HITEC City financial district and modern municipal expansion in Hyderabad' },
+            caseStudy: { query: 'durgam cheruvu bridge hyderabad infrastructure', purpose: 'Strategic road development and iconic cable-stayed bridge infrastructure' },
+            process: { query: 'hyderabad city street urban municipal', purpose: 'Urban municipal sanitation, solid waste management, and civic operations' },
+            statistics: { query: 'hyderabad city skyline modern buildings', purpose: 'HITEC City financial district and modern municipal expansion in Hyderabad' },
           },
         };
       }

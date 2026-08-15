@@ -187,7 +187,8 @@ export function determineSubjectDomain(query: string): DomainRules {
         'delhi', 'ashoka', 'bench', 'statue', 'scales', 'book',
         'hyderabad', 'charminar', 'ghmc', 'municipal', 'corporation', 'urban',
         'civic', 'governance', 'infrastructure', 'bridge', 'skyline', 'hitec city',
-        'sanitation', 'city', 'ward', 'zonal', 'telangana', 'building', 'street', 'road'
+        'sanitation', 'city', 'ward', 'zonal', 'telangana', 'building', 'street', 'road',
+        'durgam', 'cheruvu', 'waste', 'workers', 'modern', 'architecture', 'monument'
       ],
       forbiddenKeywords: [
         'us supreme court', 'united states supreme court', 'scotus',

@@ -54,6 +54,17 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
   let domain: TopicDomain = 'general-science-technology';
 
   if (
+    lower.includes('pollution') ||
+    lower.includes('air quality') ||
+    lower.includes('aqi') ||
+    lower.includes('smog') ||
+    lower.includes('climate') ||
+    lower.includes('global warming') ||
+    lower.includes('greenhouse') ||
+    lower.includes('carbon')
+  ) {
+    domain = 'climate-environment';
+  } else if (
     lower.includes('photosynthesis') ||
     lower.includes('chloroplast') ||
     lower.includes('calvin cycle') ||
@@ -81,6 +92,44 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
   ) {
     domain = 'blockchain-computing';
   } else if (
+    lower.includes('constitution') ||
+    lower.includes('rights') ||
+    lower.includes('law') ||
+    lower.includes('governance') ||
+    lower.includes('judicial') ||
+    lower.includes('preamble') ||
+    lower.includes('legal')
+  ) {
+    domain = 'law-governance';
+  } else if (
+    lower.includes('health') ||
+    lower.includes('medic') ||
+    lower.includes('clinical') ||
+    lower.includes('diagnostic') ||
+    lower.includes('patient') ||
+    lower.includes('hospital')
+  ) {
+    domain = 'healthcare-medicine';
+  } else if (
+    lower.includes('iot') ||
+    lower.includes('cyber') ||
+    lower.includes('security') ||
+    lower.includes('embedded') ||
+    lower.includes('malware') ||
+    lower.includes('botnet') ||
+    lower.includes('firmware') ||
+    lower.includes('cve') ||
+    lower.includes('ddos')
+  ) {
+    domain = 'cybersecurity-computing';
+  } else if (
+    lower.includes('agriculture') ||
+    lower.includes('farming') ||
+    lower.includes('crop') ||
+    lower.includes('agronomy')
+  ) {
+    domain = 'agriculture-agtech';
+  } else if (
     (lower.includes('culture') && !lower.includes('tissue culture') && !lower.includes('cell culture') && !lower.includes('bacterial culture')) ||
     lower.includes('heritage') ||
     lower.includes('tradition') ||
@@ -100,16 +149,6 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
     (lower.includes('india') && !lower.includes('constitution') && !lower.includes('law'))
   ) {
     domain = 'culture-history-heritage';
-  } else if (lower.includes('climate') || lower.includes('global warming') || lower.includes('greenhouse') || lower.includes('pollution') || lower.includes('carbon')) {
-    domain = 'climate-environment';
-  } else if (lower.includes('constitution') || lower.includes('rights') || lower.includes('law') || lower.includes('governance') || lower.includes('judicial') || lower.includes('preamble') || lower.includes('legal')) {
-    domain = 'law-governance';
-  } else if (lower.includes('health') || lower.includes('medic') || lower.includes('clinical') || lower.includes('diagnostic') || lower.includes('patient') || lower.includes('hospital')) {
-    domain = 'healthcare-medicine';
-  } else if (lower.includes('iot') || lower.includes('cyber') || lower.includes('security') || lower.includes('embedded') || lower.includes('malware') || lower.includes('botnet') || lower.includes('firmware') || lower.includes('cve') || lower.includes('ddos')) {
-    domain = 'cybersecurity-computing';
-  } else if (lower.includes('agriculture') || lower.includes('farming') || lower.includes('crop') || lower.includes('agronomy')) {
-    domain = 'agriculture-agtech';
   }
 
   // Extract core keywords
@@ -121,7 +160,45 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
 
   // Domain-specific metadata and queries
   switch (domain) {
-    case 'climate-environment':
+    case 'climate-environment': {
+      const isAirPollution =
+        lower.includes('pollution') ||
+        lower.includes('air quality') ||
+        lower.includes('aqi') ||
+        lower.includes('smog') ||
+        lower.includes('particulate') ||
+        lower.includes('pm2.5') ||
+        lower.includes('pm10');
+
+      if (isAirPollution) {
+        return {
+          rawTopic: topic,
+          normalizedTitle: 'Air Pollution in India: Sources, Dynamics, Health Impacts & Mitigation Strategies',
+          slug,
+          domain: 'climate-environment',
+          keywords,
+          eyebrows: {
+            title: 'ATMOSPHERIC DYNAMICS, EPIDEMIOLOGY & POLICY ROADMAP',
+            overview: 'MULTI-SECTORAL DRIVERS OF AIR QUALITY DEGRADATION',
+            concept: 'PM2.5 / PM10 SPECIATION & METEOROLOGICAL INVERSION',
+            process: 'SEASONAL POLLUTION CYCLE ACROSS THE INDO-GANGETIC PLAIN',
+            comparison: 'PRIMARY VEHICULAR EXHAUST vs SECONDARY INORGANIC AEROSOLS',
+            statistics: 'EPIDEMIOLOGICAL BURDEN & AMBIENT AQI BENCHMARKS',
+            table: 'SOURCE APPORTIONMENT & SECTORAL EMISSIONS INVENTORY',
+            caseStudy: 'DELHI-NCR AIRSHED MITIGATION: NCAP & CAQM FRAMEWORKS',
+            takeaways: 'STRATEGIC INTERVENTIONS FOR CLEAN AIR GOVERNANCE',
+            conclusion: 'TOWARDS BREATHABLE SKIES: A COMPREHENSIVE CLEAN AIR HORIZON',
+          },
+          imageQueries: {
+            hero: { query: 'delhi smog india air pollution', purpose: 'Dense winter smog and atmospheric particulate haze over New Delhi urban landscape' },
+            concept: { query: 'factory smoke air pollution industrial emissions', purpose: 'Industrial particulate emissions, sulfur dioxide plumes, and aerosol suspension' },
+            caseStudy: { query: 'electric bus public transport modern city', purpose: 'Zero-emission electric public bus rapid transit and urban clean mobility transition' },
+            process: { query: 'crop burning field agriculture smoke', purpose: 'Post-harvest agricultural crop residue stubble burning in farm fields' },
+            statistics: { query: 'traffic congestion air pollution cars road city', purpose: 'Dense vehicular traffic congestion, tailpipe exhaust, and urban transportation emissions' },
+          },
+        };
+      }
+
       return {
         rawTopic: topic,
         normalizedTitle: topic,
@@ -148,6 +225,7 @@ export function createUniversalTopicContext(topic: string): UniversalTopicContex
           statistics: { query: 'smog air pollution factory emissions', purpose: 'Atmospheric carbon emissions and pollution indicators' },
         },
       };
+    }
 
     case 'biotechnology-botany':
       return {

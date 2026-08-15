@@ -36,16 +36,16 @@ export async function cacheImageAsset(
   try {
     const downloadedPath = await downloadFile(asset.sourceUrl, rawPath);
     if (downloadedPath && fs.existsSync(downloadedPath) && fs.statSync(downloadedPath).size > 1000) {
-      // 1. Optimize image to high-fidelity 1080p master (crystal-clear presentation quality, ~300-600 KB)
+      // 1. Optimize image to high-fidelity studio master (2560x1440 QHD, 4:4:4 chroma, pristine visual quality ~800KB-1.5MB)
       await sharp(downloadedPath)
-        .resize({ width: 1920, height: 1080, fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 88, mozjpeg: true })
+        .resize({ width: 2560, height: 1440, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 94, mozjpeg: true, chromaSubsampling: '4:4:4' })
         .toFile(localPath);
 
-      // 2. Generate lightweight thumbnail for SVG preview rendering
+      // 2. Generate thumbnail for SVG preview rendering
       await sharp(downloadedPath)
-        .resize({ width: 800, height: 600, fit: 'inside' })
-        .jpeg({ quality: 80 })
+        .resize({ width: 960, height: 540, fit: 'inside' })
+        .jpeg({ quality: 85 })
         .toFile(thumbPath);
 
       // Clean up raw temp file

@@ -55,8 +55,223 @@ export function synthesizeDynamicSlides(
 
   // Domain-specific dynamic slide content synthesis
   switch (domain) {
-    // 1. GLOBAL WARMING & CLIMATE CHANGE
+    // 1. GLOBAL WARMING & CLIMATE CHANGE / AIR POLLUTION
     case 'climate-environment': {
+      const isAirPollution =
+        slug.includes('pollution') ||
+        normalizedTitle.toLowerCase().includes('pollution') ||
+        (ctx.rawTopic && ctx.rawTopic.toLowerCase().includes('pollution')) ||
+        (ctx.rawTopic && ctx.rawTopic.toLowerCase().includes('air quality')) ||
+        (ctx.rawTopic && ctx.rawTopic.toLowerCase().includes('smog'));
+
+      if (isAirPollution) {
+        const slide1: TitleSlideData = {
+          id: `${slug}-01-title`,
+          type: 'title',
+          eyebrow: eyebrows.title,
+          title: 'Air Pollution in India: Sources, Dynamics & Mitigation',
+          subtitle: 'A Multidisciplinary Assessment of Meteorological Inversion, Particulate Speciation, Public Health Burdens, and Multi-Sectoral Airshed Governance',
+          image: assets.heroPath,
+          dark: true,
+          slideNumber: 1,
+          totalSlides: slideCount,
+          notes: `Welcome to this presentation on "Air Pollution in India: Sources, Dynamics & Mitigation". Today we examine the atmospheric mechanics, source apportionment, epidemiological impacts, and statutory policy interventions driving clean air governance across India.${assets.heroAttribution ? `\n\n[Image Credit: ${assets.heroAttribution}]` : ''}${userNotes}`,
+        };
+
+        const slide2: OverviewSlideData = {
+          id: `${slug}-02-overview`,
+          type: 'overview',
+          eyebrow: eyebrows.overview,
+          title: 'Multi-Sectoral Drivers of Air Quality Degradation',
+          subtitle: 'Four primary systemic contributors driving ambient atmospheric particulate and gaseous concentrations.',
+          agendaItems: [
+            { number: '1', title: 'Vehicular & Transport Exhaust', description: 'Heavy-duty diesel fleets, high-density traffic congestion, and non-exhaust road dust resuspension.', icon: 'Activity' },
+            { number: '2', title: 'Industrial & Thermal Power', description: 'Unabated coal-fired thermal utilities, brick kilns, and industrial furnaces emitting SO2, NOx, and fly ash.', icon: 'Layers' },
+            { number: '3', title: 'Agricultural Stubble Burning', description: 'Post-harvest paddy straw combustion across Punjab and Haryana causing acute episodic autumn smog spikes.', icon: 'Sun' },
+            { number: '4', title: 'Household Biomass Combustion', description: 'Rural and peri-urban solid biomass fuels (firewood, dung cakes) for domestic cooking and space heating.', icon: 'Droplet' },
+          ],
+          slideNumber: 2,
+          totalSlides: slideCount,
+          notes: 'Our presentation analyzes four major emission sectors: transport corridors, thermal and heavy industries, seasonal agricultural biomass burning, and domestic solid fuels, mapping their contributions to severe air degradation.',
+        };
+
+        const slide3: ConceptSlideData = {
+          id: `${slug}-03-concept`,
+          type: 'concept',
+          eyebrow: eyebrows.concept,
+          title: 'Atmospheric Physics & Boundary Layer Inversion',
+          subtitle: 'How winter thermal inversion and Indo-Gangetic basin geomorphology create persistent pollution traps.',
+          mainConcept: {
+            title: 'Planetary Boundary Layer (PBL) Collapse',
+            description: 'During winter months (October to January), descending Himalayan cold air triggers thermal inversion across the Indo-Gangetic Plain. The planetary boundary layer collapses from ~1,500m in summer to <300m in winter, trapping concentrated particulate mass near ground level under low wind speeds (<2 m/s).',
+          },
+          cards: [
+            {
+              title: 'Particulate Matter (PM2.5 & PM10)',
+              body: 'Microscopic aerosols <2.5μm penetrate deep into alveolar pulmonary capillaries and enter the bloodstream, triggering systemic cardiovascular and respiratory inflammation.',
+              icon: 'Activity',
+            },
+            {
+              title: 'Secondary Inorganic Aerosols',
+              body: 'Photochemical reactions convert gaseous SO2, NOx, and agricultural ammonia (NH3) into secondary nitrates and sulfates, constituting over 40% of winter PM2.5 mass.',
+              icon: 'Layers',
+            },
+          ],
+          image: assets.conceptPath,
+          slideNumber: 3,
+          totalSlides: slideCount,
+          notes: `This slide explains the meteorological physics behind severe winter pollution: thermal inversion creates a dense atmospheric lid, while chemical reactions transform gaseous emissions into secondary particulate matter.${assets.conceptAttribution ? `\n\n[Image Credit: ${assets.conceptAttribution}]` : ''}`,
+        };
+
+        const slide4: ProcessSlideData = {
+          id: `${slug}-04-process`,
+          type: 'process',
+          eyebrow: eyebrows.process,
+          title: 'Annual Air Pollution Cycle in Northern India',
+          subtitle: 'Seasonal progression of meteorological dynamics, agricultural practices, and peak ambient toxicity.',
+          steps: [
+            { stepNumber: 1, title: 'Summer Dust Influx (Mar–Jun)', description: 'Mineral dust transport from the Thar Desert and convective thermal updrafts driving elevated PM10 background levels.', icon: 'Sun' },
+            { stepNumber: 2, title: 'Monsoon Washout (Jul–Sep)', description: 'Precipitation wet deposition scrubs atmospheric aerosols, providing annual minimum AQI and optimal dispersion.', icon: 'Droplet' },
+            { stepNumber: 3, title: 'Stubble Burning Spikes (Oct–Nov)', description: 'Paddy residue burning combined with anticyclonic stagnant winds creating hazardous severe-plus smog episodes.', icon: 'Flame' },
+            { stepNumber: 4, title: 'Peak Winter Smog (Dec–Feb)', description: 'Cold-air thermal inversion, high biomass burning for heat, and persistent morning radiation fog trapping pollutants.', icon: 'Layers' },
+          ],
+          image: assets.processPath,
+          slideNumber: 4,
+          totalSlides: slideCount,
+          notes: `The annual pollution calendar follows distinct meteorological phases: summer mineral dust storms, monsoon wet deposition washout, autumn crop burning spikes, and severe winter thermal inversion trapping.${assets.processAttribution ? `\n\n[Image Credit: ${assets.processAttribution}]` : ''}`,
+        };
+
+        const slide5: ComparisonSlideData = {
+          id: `${slug}-05-comparison`,
+          type: 'comparison',
+          eyebrow: eyebrows.comparison,
+          title: 'Primary Vehicular Exhaust vs Secondary Aerosols',
+          subtitle: 'Contrasting direct point-source tailpipe emissions with complex atmospheric chemical transformations.',
+          leftPanel: {
+            title: 'Primary Vehicular Exhaust (PM2.5, NOx, BC)',
+            accentColor: 'gold',
+            points: [
+              'Directly emitted at ground level from internal combustion engines, brake pad wear, and diesel freight fleets.',
+              'Enriched with elemental black carbon, toxic heavy metals, and carcinogenic polycyclic aromatic hydrocarbons (PAHs).',
+              'Highly concentrated along urban arterial transit corridors during morning and evening rush hours.',
+              'Directly mitigated via BS-VI emission standards, electric vehicle (EV) adoption, and DPF soot filters.',
+            ],
+          },
+          rightPanel: {
+            title: 'Secondary Inorganic Aerosols (NH4+, SO4, NO3)',
+            accentColor: 'blue',
+            points: [
+              'Formed in the atmosphere via photochemical oxidation of gaseous precursors over hundreds of kilometers.',
+              'Regional transboundary airshed phenomenon spanning across inter-state administrative borders.',
+              'Driven by agricultural synthetic fertilizer ammonia reacting with power plant sulfur and nitrogen oxides.',
+              'Requires multi-state regional airshed management rather than city-isolated municipal interventions.',
+            ],
+          },
+          slideNumber: 5,
+          totalSlides: slideCount,
+          notes: 'Here we contrast primary tailpipe emissions with secondary inorganic aerosols. While vehicular exhaust is localized and addressable via fleet electrification, secondary aerosols require regional inter-state coordination between agriculture and power utilities.',
+        };
+
+        const slide6: StatisticsSlideData = {
+          id: `${slug}-06-statistics`,
+          type: 'statistics',
+          eyebrow: eyebrows.statistics,
+          title: 'Epidemiological Burden & Ambient AQI Benchmarks',
+          subtitle: 'Peer-reviewed epidemiological benchmarks from CPCB, ICMR, and Lancet Planetary Health.',
+          metrics: [
+            { number: '1.67M', label: 'Annual Premature Deaths', explanation: 'Attributable to ambient and household air pollution in India, accounting for 17.8% of total national mortality.' },
+            { number: '300–500+', label: 'Peak Winter AQI Levels', explanation: 'Hazardous Air Quality Index values recorded regularly across Delhi-NCR and Indo-Gangetic cities in November.' },
+            { number: '$36.8B', label: 'Annual Economic Loss', explanation: 'Estimated economic cost of air pollution output losses, equivalent to 1.36% of India total GDP.' },
+            { number: '40%', label: 'NCAP 2026 Abatement Target', explanation: 'National Clean Air Programme reduction target for PM2.5 and PM10 across 131 non-attainment cities.' },
+          ],
+          image: assets.statisticsPath,
+          slideNumber: 6,
+          totalSlides: slideCount,
+          notes: `These critical figures highlight the severe public health and economic burden: 1.67 million premature deaths annually, severe AQI readings exceeding 400, $36.8 billion in lost economic productivity, and the national 40% reduction target by 2026.${assets.statisticsAttribution ? `\n\n[Image Credit: ${assets.statisticsAttribution}]` : ''}`,
+        };
+
+        const slide7: TableSlideData = {
+          id: `${slug}-07-table`,
+          type: 'table',
+          eyebrow: eyebrows.table,
+          title: 'Sectoral Source Apportionment & Emissions Inventory',
+          subtitle: 'Structured source contribution matrix based on comprehensive IIT Kanpur and TERI airshed studies.',
+          headers: ['Pollution Source', 'Annual Contribution', 'Peak Winter Share', 'Primary Mitigation Levers'],
+          rows: [
+            ['Vehicular & Transport', '24% – 28%', '30% – 35%', 'FAME-II EV subsidies, BS-VI standards, Metro expansion'],
+            ['Secondary Aerosols', '20% – 25%', '35% – 42%', 'Flue gas desulfurization (FGD), fertilizer management'],
+            ['Biomass & Stubble Burning', '12% – 16%', '25% – 40% (Nov)', 'Ex-situ bio-pelletization, Happy Seeder machines, CBG'],
+            ['Industrial & Brick Kilns', '15% – 18%', '12% – 15%', 'Zig-zag kiln conversion, PNG gas grid connection'],
+            ['Road Dust & Construction', '14% – 17%', '8% – 12%', 'Mechanical sweeping, anti-smog water guns, C&D recycling'],
+            ['Domestic Biomass Fuel', '8% – 12%', '14% – 18%', 'PM Ujjwala Yojana LPG expansion, electric induction'],
+          ],
+          keyTakeaway: 'Source apportionment confirms that winter peak pollution is driven by synergistic interactions between secondary aerosols, vehicle emissions, and agricultural residue burning.',
+          slideNumber: 7,
+          totalSlides: slideCount,
+          notes: 'This structured matrix summarizes scientific source apportionment data from IIT Kanpur and TERI, detailing annual vs peak winter contributions and the primary policy levers required to decarbonize each sector.',
+        };
+
+        const slide8: CaseStudySlideData = {
+          id: `${slug}-08-case-study`,
+          type: 'case-study',
+          eyebrow: eyebrows.caseStudy,
+          title: 'Delhi-NCR Airshed Management: Policy & Tech Deployment',
+          subtitle: 'Evaluating statutory enforcement, Graded Response Action Plan (GRAP), and technological deployment.',
+          context: 'Delhi-NCR National Capital Region (Over 30 million residents across Delhi, Haryana, UP, and Rajasthan airshed).',
+          challenge: 'Jurisdictional fragmentation across multiple state governments during acute hazardous winter smog emergencies.',
+          solution: 'Statutory establishment of Commission for Air Quality Management (CAQM), automated GRAP Stages I–IV triggers, closure of coal plants, and deployment of 1,600+ electric buses.',
+          result: 'Achieved 20% decline in annual average PM10 since 2017, though severe episodic winter peaks remain an ongoing enforcement priority.',
+          image: assets.caseStudyPath,
+          slideNumber: 8,
+          totalSlides: slideCount,
+          notes: `Our case study examines the Delhi-NCR airshed. By establishing the statutory CAQM authority, enforcing automated GRAP emergency protocols, and scaling electric public transit, Delhi achieved measurable reductions in background particulate concentrations.${assets.caseStudyAttribution ? `\n\n[Image Credit: ${assets.caseStudyAttribution}]` : ''}`,
+        };
+
+        const slide9: KeyTakeawaysSlideData = {
+          id: `${slug}-09-takeaways`,
+          type: 'takeaways',
+          eyebrow: eyebrows.takeaways,
+          title: 'Strategic Priorities for Clean Air Governance',
+          subtitle: 'Four actionable policy imperatives for achieving sustained ambient air quality compliance nationwide.',
+          takeaways: [
+            {
+              number: 1,
+              title: 'Transition to Regional Airshed Governance',
+              description: 'Establish statutory regional airshed authorities aligned with meteorological basins rather than arbitrary municipal borders.',
+            },
+            {
+              number: 2,
+              title: 'Enforce Thermal Flue-Gas Desulfurization (FGD)',
+              description: 'Strictly enforce 100% compliance timelines for sulfur scrubbers in coal-fired power plants within 300km of urban clusters.',
+            },
+            {
+              number: 3,
+              title: 'Scale Circular Economy for Crop Residue (SATAT)',
+              description: 'Commercialize ex-situ stubble conversion into Compressed Biogas (CBG) and thermal power plant co-firing pellets.',
+            },
+          ],
+          slideNumber: 9,
+          totalSlides: slideCount,
+          notes: 'Three high-leverage policy priorities: institutionalizing regional airshed governance, enforcing strict industrial desulfurization, and scaling economic incentives for agricultural stubble utilization.',
+        };
+
+        const slide10: ConclusionSlideData = {
+          id: `${slug}-10-conclusion`,
+          type: 'conclusion',
+          eyebrow: eyebrows.conclusion,
+          title: 'Towards Breathable Skies: The Clean Air Horizon',
+          subtitle: 'Sustaining cross-sectoral commitment, clean technology investment, and public health equity for India future.',
+          summaryText: 'Air pollution in India is an urgent public health and economic challenge requiring coordinated airshed governance, industrial decarbonization, and sustainable agricultural practices. Achieving clean air will protect millions of lives and power sustainable economic growth.',
+          finalCallToAction: 'ACT ACCELERATIVELY ACROSS GOVERNMENTS, INDUSTRY, AND CITIZENS FOR CLEAN, BREATHABLE AIR FOR ALL.',
+          dark: true,
+          slideNumber: 10,
+          totalSlides: slideCount,
+          notes: 'In conclusion, clean air is fundamental to public health and economic resilience. Through technological innovation, regional governance, and community participation, India can achieve breathable skies for all. Thank you.',
+        };
+
+        return [slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slide9, slide10];
+      }
+
       const slide1: TitleSlideData = {
         id: `${slug}-01-title`,
         type: 'title',

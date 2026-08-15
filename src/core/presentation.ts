@@ -222,8 +222,20 @@ function renderImage(slide: PptxGenJS.Slide, el: ImageElement): void {
     h: el.size.h,
   };
 
-  if (el.path) imgProps.path = el.path;
-  if (el.data) imgProps.data = el.data;
+  if (el.data) {
+    imgProps.data = el.data;
+  } else if (el.path && fs.existsSync(el.path)) {
+    try {
+      const ext = path.extname(el.path).toLowerCase();
+      const mime = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
+      const base64Data = fs.readFileSync(el.path).toString('base64');
+      imgProps.data = `data:${mime};base64,${base64Data}`;
+    } catch {
+      imgProps.path = el.path;
+    }
+  } else if (el.path) {
+    imgProps.path = el.path;
+  }
 
   if (el.sizing) {
     imgProps.sizing = {

@@ -11,6 +11,8 @@ import { title } from '../components/title';
 import { card } from '../components/card';
 import { footer } from '../components/footer';
 import { imagePanel } from '../components/imagePanel';
+import { textBox } from '../components/text';
+import { iconBadge } from '../components/iconBadge';
 
 function hex(color: string): string {
   return color.replace(/^#/, '');
@@ -43,24 +45,79 @@ export function renderProcessSlide(data: ProcessSlideData): SlideDefinition {
   const count = data.steps.length;
 
   if (hasImage) {
-    // Vertical layout: stack steps vertically, image on right
+    // Vertical stacked process cards on left with badge on left side of card
     const stepH = (cardH - (count - 1) * 0.12) / count;
 
     data.steps.forEach((step, idx) => {
       const x = ml;
       const y = startY + idx * (stepH + 0.12);
+      const isEven = idx % 2 === 0;
+      const accent = isEven ? t.colors.teal : t.colors.blue;
+      const fill = isEven ? t.colors.mint2 : t.colors.sky;
+
+      // 1. Step background card container
+      elements.push({
+        kind: 'shape',
+        shapeType: 'rounded-rect',
+        fill: hex(fill),
+        stroke: hex(t.colors.line),
+        strokeWidth: 1,
+        rectRadius: pxToInches(t.shapes.cardRadius),
+        shadow: t.shadows.sm,
+        position: { x, y },
+        size: { w: stepsWidth, h: stepH },
+      });
+
+      // 2. Step number circle badge on left
+      const badgeSize = 0.36;
+      const badgeX = x + 0.12;
+      const badgeY = y + (stepH - badgeSize) / 2;
 
       elements.push(
-        ...card({
-          x,
-          y,
-          width: stepsWidth,
-          height: stepH,
+        ...iconBadge({
           icon: step.icon ?? 'ArrowRight',
-          title: `Step ${step.stepNumber}: ${step.title}`,
-          body: step.description,
-          accent: idx % 2 === 0 ? t.colors.teal : t.colors.blue,
-          fill: idx % 2 === 0 ? t.colors.mint2 : t.colors.sky,
+          x: badgeX,
+          y: badgeY,
+          size: badgeSize,
+          iconColor: accent,
+          badgeFill: t.colors.white,
+          theme: t,
+        })
+      );
+
+      // 3. Text block on right
+      const textX = badgeX + badgeSize + 0.12;
+      const textW = stepsWidth - (textX - x) - 0.12;
+      const titleH = 0.28;
+      const bodyH = Math.max(0.38, stepH - titleH - 0.12);
+
+      // Title: "Step X: Title"
+      elements.push(
+        textBox({
+          text: `Step ${step.stepNumber}: ${step.title}`,
+          x: textX,
+          y: y + 0.08,
+          w: textW,
+          h: titleH,
+          fontFace: t.typography.heading.fontFace,
+          fontSize: 12.5,
+          color: t.colors.ink,
+          bold: true,
+          theme: t,
+        })
+      );
+
+      // Body / Description
+      elements.push(
+        textBox({
+          text: step.description,
+          x: textX,
+          y: y + 0.08 + titleH,
+          w: textW,
+          h: bodyH,
+          fontFace: t.typography.body.fontFace,
+          fontSize: 10,
+          color: t.colors.slate,
           theme: t,
         })
       );

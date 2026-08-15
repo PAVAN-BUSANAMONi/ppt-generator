@@ -902,15 +902,15 @@ export function synthesizeDynamicSlides(
         const slide10: ConclusionSlideData = {
           id: `${slug}-10-conclusion`,
           type: 'conclusion',
-          eyebrow: eyebrows.conclusion,
-          title: 'Towards a Global, Climate-Resilient Hyderabad',
-          subtitle: 'Sustaining citizen-first municipal governance, green infrastructure, and world-class civic quality of life.',
-          summaryText: 'The Greater Hyderabad Municipal Corporation stands as a model of progressive urban governance in India. By combining decentralized administration, bold mega-infrastructure investments, and citizen-centric digital platforms, Hyderabad is pioneering a sustainable, resilient, and inclusive urban future.',
-          finalCallToAction: 'EMPOWERING CITIZENS, BUILDING RESILIENT INFRASTRUCTURE, AND DELIVERING EXCELLENCE IN URBAN GOVERNANCE.',
+          eyebrow: '🙏 THANK YOU FOR YOUR TIME & ATTENTION 🙏',
+          title: 'Thank You! 🙏 Towards a Global, Resilient Hyderabad 🏛️',
+          subtitle: 'Sustaining citizen-first municipal governance, green infrastructure, and world-class civic quality of life. ✨',
+          summaryText: 'The Greater Hyderabad Municipal Corporation stands as a model of progressive urban governance in India. By combining decentralized administration, bold mega-infrastructure investments, and citizen-centric digital platforms, Hyderabad is pioneering a sustainable, resilient, and inclusive urban future. 🙏 Thank you for your valuable time and partnership!',
+          finalCallToAction: '🤝 EMPOWERING CITIZENS, BUILDING RESILIENT INFRASTRUCTURE & DELIVERING URBAN EXCELLENCE! ✨🌿',
           dark: true,
           slideNumber: 10,
           totalSlides: slideCount,
-          notes: 'In conclusion, Greater Hyderabad Municipal Corporation is transforming urban administration through infrastructure modernization, green initiatives, and digital governance, ensuring an exceptional quality of life for all citizens. Thank you.',
+          notes: 'Thank you very much for your time and engagement throughout this presentation on Greater Hyderabad Municipal Corporation. We appreciate your interest in urban governance and sustainable megacity development. 🙏✨',
         };
 
         return [slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slide9, slide10];

@@ -1,5 +1,5 @@
 node_modules/
-outputs/
+outputs/*
 work/
 src/work/
 *.log
@@ -10,6 +10,7 @@ src/work/
 *.webp
 *.zip
 
-# Track sample reference decks
+# Track sample reference decks and target deck
 !samples/
 !samples/*
+!outputs/municipal-corporation-in-hyderabad.pptx

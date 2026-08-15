@@ -18,13 +18,13 @@ export async function cacheImageAsset(
 ): Promise<ImageAsset> {
   const assetsDirectory = targetDir || path.resolve(__dirname, '..', '..', 'work', 'assets');
 
-  const cleanFileName = `${asset.id.replace(/[^a-z0-9]/gi, '_')}.png`;
+  const cleanFileName = `${asset.id.replace(/[^a-z0-9]/gi, '_')}.jpg`;
   const thumbFileName = `${asset.id.replace(/[^a-z0-9]/gi, '_')}_thumb.jpg`;
   const localPath = path.join(assetsDirectory, cleanFileName);
   const thumbPath = path.join(assetsDirectory, thumbFileName);
 
-  // Return existing local cache if present and high-resolution (>2.5MB)
-  if (fs.existsSync(localPath) && fs.statSync(localPath).size > 2500000) {
+  // Return existing local cache if present (>50KB)
+  if (fs.existsSync(localPath) && fs.statSync(localPath).size > 50000) {
     return {
       ...asset,
       localPath,
@@ -36,10 +36,10 @@ export async function cacheImageAsset(
   try {
     const downloadedPath = await downloadFile(asset.sourceUrl, rawPath);
     if (downloadedPath && fs.existsSync(downloadedPath) && fs.statSync(downloadedPath).size > 1000) {
-      // 1. Optimize image to high-fidelity 4K PNG master (lossless visual quality for PPTX)
+      // 1. Optimize image to high-fidelity 1080p master (crystal-clear presentation quality, ~300-600 KB)
       await sharp(downloadedPath)
-        .resize({ width: 3840, height: 2160, fit: 'inside' })
-        .png({ compressionLevel: 2 })
+        .resize({ width: 1920, height: 1080, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 88, mozjpeg: true })
         .toFile(localPath);
 
       // 2. Generate lightweight thumbnail for SVG preview rendering
@@ -55,7 +55,7 @@ export async function cacheImageAsset(
         // ignore
       }
 
-      console.log(`✔ Cached & optimized 4K master "${asset.title}" (${asset.source}) -> ${localPath} (${(fs.statSync(localPath).size / 1024 / 1024).toFixed(2)} MB)`);
+      console.log(`✔ Cached & optimized presentation master "${asset.title}" (${asset.source}) -> ${localPath} (${(fs.statSync(localPath).size / 1024).toFixed(1)} KB)`);
       return {
         ...asset,
         localPath,

@@ -98,13 +98,16 @@ export class AIImageProvider {
 
     // If local asset does not already exist, create an optimized 16:9 master image
     if (!fs.existsSync(localPath)) {
-      // Create a high-quality 1920x1080 SVG master visual and convert/save
       const svgGraphic = this.createThematicMasterSvg(req.topic, req.slideTitle, req.style || 'editorial');
-      fs.writeFileSync(localPath.replace('.png', '.svg'), svgGraphic, 'utf-8');
-      
-      // Also write PNG file placeholder/buffer for PPTX insertion
-      // We will ensure a clean high-resolution file is saved
-      fs.writeFileSync(localPath, Buffer.from(svgGraphic), 'utf-8');
+      try {
+        const sharp = (await import('sharp')).default;
+        await sharp(Buffer.from(svgGraphic))
+          .resize({ width: 1920, height: 1080 })
+          .png({ compressionLevel: 8 })
+          .toFile(localPath);
+      } catch {
+        fs.writeFileSync(localPath, Buffer.from(svgGraphic));
+      }
     }
 
     const asset: ImageAsset = {
